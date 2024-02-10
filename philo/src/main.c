@@ -12,38 +12,50 @@
 
 #include "../inc/philo.h"
 
-void	*eat_food(void *data)
+void	*eat_food(void *id)
 {
-	t_fork			fork;
+	t_fork	fork;
+	int		i;	
 
-	pthread_mutex_lock(&fork.fork);
+	i = *(int*)id;
+	printf("Philosopher%d takes the fork\n", i);
+	//pthread_mutex_lock(&fork.fork);
 	sleep(2);
-	pthread_mutex_unlock(&fork.fork);
+	printf("Philosopher%d finishs the food\n", i);
+	//pthread_mutex_unlock(&fork.fork);
+	free(id);
 	return (NULL);
 }
 
 int	main(int ac, char **av)
 {
-	pthread_t		philo[10];
+	pthread_t		*philo;
 	t_fork			fork;
+	int				*id;
 	int				i;
 
-	pthread_mutex_init(&fork.fork, NULL);
+	//pthread_mutex_init(&fork.fork, NULL);
 	i = 1;
+	philo = malloc(sizeof(pthread_t));
 	while (i != 11)
 	{
-		if (pthread_create(&philo[i], NULL, eat_food, NULL))
+		id = malloc(sizeof(int));
+		if (!id)
 			exit(0);
-		printf("Philosopher%d takes the fork\n", i);
+		*id = i;
+		if (pthread_create(philo, NULL, eat_food, id))
+			exit(0);
+		/*pthread_detach(philo[3]);
+		pthread_detach(philo[4]);*/
 		i++;
 	}
 	i = 1;
 	while (i != 11)
 	{
-		if (pthread_join(philo[i], NULL))
+		if (pthread_join(*philo, NULL))
 			exit(0);
-		printf("Philosopher%d finishs the food\n", i);
 		i++;
 	}
-	pthread_mutex_destroy(&fork.fork);
+	//pthread_mutex_destroy(&fork.fork);
+	free(philo);
 }
