@@ -1,1 +1,0 @@
-cc test_gettime.c && ./a.out

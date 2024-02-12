@@ -6,52 +6,52 @@
 /*   By: kaan <kaan@student.42.de>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/08 17:42:02 by kaan              #+#    #+#             */
-/*   Updated: 2024/02/09 19:44:16 by kaan             ###   ########.fr       */
+/*   Updated: 2024/02/12 14:31:13 by kaan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/philo.h"
 
-void	*eat_food(void *id)
+void	input_parse(t_table *table, char **av)
 {
-	//t_fork	fork;
-	int		i;	
-
-	i = *(int *)id;
-	printf("Philosopher%d takes the fork\n", i);
-	//pthread_mutex_lock(&fork.fork);
-	sleep(1);
-	printf("Philosopher%d finishs the food\n", i);
-	//pthread_mutex_unlock(&fork.fork);
-	free(id);
-	return (NULL);
+	table->philo_nbr = ft_atoi(av[1]);
+	table->time_to_die = ft_atoi(av[2]);
+	table->time_to_eat = ft_atoi(av[3]);
+	table->time_to_sleep = ft_atoi(av[4]);
+	if (av[5])
+		table->number_of_times_each_philosopher_must_eat = ft_atoi(av[5]);
 }
+
+/*void	philo_init(t_table *table)
+{
+	t_philo	*philo;
+	int		i;
+
+	i = table->philo_nbr;
+	while (i)
+	{
+		philo = malloc(sizeof(t_philo));
+		if (!philo)
+			return ;
+		philo->id = i;
+		table->philo = philo;
+		i--;
+	}
+}*/
 
 int	main(int ac, char **av)
 {
-	pthread_t	*philo;
-	t_fork		fork;
-	int			*id;
-	int			i;
+	t_table	*table;
 
-	//pthread_mutex_init(&fork.fork, NULL);
-	i = 1;
-	philo = malloc(10 * sizeof(pthread_t));
-	while (i != 11)
+	if (ac == 5 || ac == 6)
 	{
-		id = malloc(sizeof(int));
-		if (!id)
+		table = malloc(sizeof(t_table));
+		if (!table)
 			return (0);
-		*id = i;
-		if (pthread_create(philo, NULL, eat_food, id))
-			return (0);
-		/*pthread_detach(philo[3]);
-		pthread_detach(philo[4]);*/
-		i++;
+		input_parse(table, av);
+		philo_init(table);
+		printf("%d\n", table->philo->id);
 	}
-	if (pthread_join(*philo, NULL))
-		return (0);
-	//pthread_mutex_destroy(&fork.fork);
-	free(philo);
-	pthread_exit(0);
+	else
+		printf("Wrong Arguments!\n");
 }
