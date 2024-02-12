@@ -6,7 +6,7 @@
 /*   By: kaan <kaan@student.42.de>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 11:27:58 by kaan              #+#    #+#             */
-/*   Updated: 2024/02/12 11:29:22 by kaan             ###   ########.fr       */
+/*   Updated: 2024/02/12 15:33:44 by kaan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,4 +36,17 @@ int	ft_atoi(const char *nptr)
 		i++;
 	}
 	return (res * sign);
+}
+
+void	*safe_malloc(size_t byte)
+{
+	void	*ptr;
+
+	ptr = malloc(byte);
+	if (!ptr)
+	{
+		printf("Malloc fail!\n");
+		exit(0);
+	}
+	return (ptr);
 }

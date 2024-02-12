@@ -6,7 +6,7 @@
 /*   By: kaan <kaan@student.42.de>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/08 17:48:32 by kaan              #+#    #+#             */
-/*   Updated: 2024/02/12 11:52:52 by kaan             ###   ########.fr       */
+/*   Updated: 2024/02/12 18:02:25 by kaan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@
 typedef struct s_fork
 {
 	pthread_mutex_t	fork;
-	int				f_id;
+	int				id;
 }	t_fork;
 
 typedef struct s_philo
@@ -40,11 +40,13 @@ typedef struct s_table
 	int				time_to_eat;
 	int				time_to_sleep;
 	int				number_of_times_each_philosopher_must_eat;
+	pthread_t		monitor;
 	t_philo			*philo;
 	t_fork			*fork;
 	pthread_mutex_t	t_mutex;
 }	t_table;
 
-int	ft_atoi(const char *nptr);
+void	*safe_malloc(size_t byte);
+int		ft_atoi(const char *nptr);
 
 #endif

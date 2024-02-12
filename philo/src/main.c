@@ -6,7 +6,7 @@
 /*   By: kaan <kaan@student.42.de>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/08 17:42:02 by kaan              #+#    #+#             */
-/*   Updated: 2024/02/12 14:31:13 by kaan             ###   ########.fr       */
+/*   Updated: 2024/02/12 17:55:36 by kaan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,22 +22,47 @@ void	input_parse(t_table *table, char **av)
 		table->number_of_times_each_philosopher_must_eat = ft_atoi(av[5]);
 }
 
-/*void	philo_init(t_table *table)
+void	philo_init(t_table *table)
 {
-	t_philo	*philo;
+	t_philo	philo;
+	t_fork	fork;
 	int		i;
 
-	i = table->philo_nbr;
-	while (i)
+	i = 0;
+	table->philo = safe_malloc(sizeof(t_philo) * table->philo_nbr);
+	table->fork = safe_malloc(sizeof(t_fork) * table->philo_nbr);
+	while (i < table->philo_nbr)
 	{
-		philo = malloc(sizeof(t_philo));
-		if (!philo)
-			return ;
-		philo->id = i;
-		table->philo = philo;
-		i--;
+		philo.id = i;
+		table->philo[i] = philo;
+		i++;
 	}
-}*/
+	i = 0;
+	while (i < table->philo_nbr)
+	{
+		fork.id = i;
+		table->fork[i] = fork;
+		i++;
+	}
+}
+
+void	simulation(t_table *table)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	j = 0;
+	/*while (j < table->philo_nbr)
+	{
+		table->philo[i].first = table->fork[j];
+		j++;
+		table->philo[i].second = table->fork[j];
+		j++;
+		i++;
+	}*/
+
+}
 
 int	main(int ac, char **av)
 {
@@ -45,12 +70,10 @@ int	main(int ac, char **av)
 
 	if (ac == 5 || ac == 6)
 	{
-		table = malloc(sizeof(t_table));
-		if (!table)
-			return (0);
+		table = safe_malloc(sizeof(t_table));
 		input_parse(table, av);
 		philo_init(table);
-		printf("%d\n", table->philo->id);
+		//simulation(table);
 	}
 	else
 		printf("Wrong Arguments!\n");
