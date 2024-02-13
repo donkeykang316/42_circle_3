@@ -22,6 +22,16 @@ void	input_parse(t_table *table, char **av)
 		table->number_of_times_each_philosopher_must_eat = ft_atoi(av[5]);
 }
 
+void	assign_fork(t_table *table)
+{
+	t_fork	fork;
+
+	pthread_mutex_init(&fork.fork, NULL);
+	table->philo->left = fork;
+	table->philo->right = fork;
+	//cotinue from here, draw a plan for continuation
+}
+
 void	philo_init(t_table *table)
 {
 	t_philo	philo;
@@ -35,13 +45,8 @@ void	philo_init(t_table *table)
 	{
 		philo.id = i;
 		table->philo[i] = philo;
-		i++;
-	}
-	i = 0;
-	while (i < table->philo_nbr)
-	{
-		fork.id = i;
 		table->fork[i] = fork;
+		assign_fork(table);
 		i++;
 	}
 }

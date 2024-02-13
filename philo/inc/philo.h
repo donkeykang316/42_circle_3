@@ -29,8 +29,8 @@ typedef struct s_philo
 {
 	int			id;
 	pthread_t	ph_id;
-	t_fork		first;
-	t_fork		second;
+	t_fork		left;
+	t_fork		right;
 }	t_philo;
 
 typedef struct s_table
