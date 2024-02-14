@@ -6,7 +6,7 @@
 /*   By: kaan <kaan@student.42.de>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/08 17:48:32 by kaan              #+#    #+#             */
-/*   Updated: 2024/02/12 18:02:25 by kaan             ###   ########.fr       */
+/*   Updated: 2024/02/14 13:55:49 by kaan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@
 # include <pthread.h>
 # include <sys/time.h>
 
+typedef struct s_table	t_table;
+
 typedef struct s_fork
 {
 	pthread_mutex_t	fork;
@@ -28,25 +30,27 @@ typedef struct s_fork
 typedef struct s_philo
 {
 	int			id;
+	long		last_meal_time;
 	pthread_t	ph_id;
-	t_fork		left;
-	t_fork		right;
+	t_fork		*left;
+	t_fork		*right;
+	t_table		*table;
 }	t_philo;
 
-typedef struct s_table
+struct s_table
 {
 	int				philo_nbr;
-	int				time_to_die;
-	int				time_to_eat;
-	int				time_to_sleep;
+	long			time_to_die;
+	long			time_to_eat;
+	long			time_to_sleep;
 	int				number_of_times_each_philosopher_must_eat;
 	pthread_t		monitor;
 	t_philo			*philo;
 	t_fork			*fork;
 	pthread_mutex_t	t_mutex;
-}	t_table;
+};
 
 void	*safe_malloc(size_t byte);
-int		ft_atoi(const char *nptr);
+long	ft_atol(const char *nptr);
 
 #endif

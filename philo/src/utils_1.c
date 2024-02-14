@@ -6,17 +6,17 @@
 /*   By: kaan <kaan@student.42.de>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 11:27:58 by kaan              #+#    #+#             */
-/*   Updated: 2024/02/12 15:33:44 by kaan             ###   ########.fr       */
+/*   Updated: 2024/02/14 14:00:14 by kaan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/philo.h"
 
-int	ft_atoi(const char *nptr)
+long	ft_atol(const char *nptr)
 {
-	int	i;
-	int	sign;
-	int	res;
+	int		i;
+	long	sign;
+	long	res;
 
 	i = 0;
 	sign = 1;
