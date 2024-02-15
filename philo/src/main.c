@@ -6,7 +6,7 @@
 /*   By: kaan <kaan@student.42.de>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/08 17:42:02 by kaan              #+#    #+#             */
-/*   Updated: 2024/02/14 14:02:50 by kaan             ###   ########.fr       */
+/*   Updated: 2024/02/15 22:54:24 by kaan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,16 +38,16 @@ void	philo_init(t_table *table)
 	t_fork	fork;
 	int		i;
 
-	i = 0;
 	table->philo = safe_malloc(sizeof(t_philo) * table->philo_nbr);
 	table->fork = safe_malloc(sizeof(t_fork) * table->philo_nbr);
+	i = 0;
 	while (i < table->philo_nbr)
 	{
+		philo.table = table;
 		philo.id = i;
 		fork.id = i;
 		table->philo[i] = philo;
 		table->fork[i] = fork;
-		philo.table = table;
 		assign_fork(table, i);
 		i++;
 	}
@@ -55,25 +55,14 @@ void	philo_init(t_table *table)
 
 void	*action(void *data)
 {
-	struct timeval	time;
 	t_philo			*philo;
 
 	philo = (t_philo *)data;
-	philo->last_meal_time = gettimeofday(&time, NULL);
 	printf("Philosopher%d is thinking\n", philo->id);
 	//pthread_mutex_lock(&(philo->left->fork));
 	//pthread_mutex_lock(&(philo->right->fork));
 	usleep(philo->table->time_to_eat);
-	printf("now:%ld\n", gettimeofday(&time, NULL));
-	printf("last:%lu\n", philo->last_meal_time);
-	printf("die:%lu\n", philo->table->time_to_die);
-	if (gettimeofday(&time, NULL) - philo->last_meal_time == philo->table->time_to_die)
-	{
-		printf("Philosopher%d is dead\n", philo->id);
-		pthread_detach(philo->ph_id);
-	}
 	printf("Philosopher%d is eating\n", philo->id);
-	usleep(philo->table->time_to_eat);
 	//pthread_mutex_unlock(&(philo->left->fork));
 	//pthread_mutex_unlock(&(philo->right->fork));
 }
@@ -95,10 +84,7 @@ void	simulation(t_table *table)
 
 int	main(int ac, char **av)
 {
-	t_table	*table;
-	struct timeval	time;
-
-	printf("time:%ld\n", gettimeofday(&time, NULL));
+	t_table			*table;
 
 	if (ac == 5 || ac == 6)
 	{

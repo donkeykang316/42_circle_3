@@ -6,7 +6,7 @@
 /*   By: kaan <kaan@student.42.de>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/08 17:48:32 by kaan              #+#    #+#             */
-/*   Updated: 2024/02/14 13:55:49 by kaan             ###   ########.fr       */
+/*   Updated: 2024/02/15 21:40:52 by kaan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,11 +39,11 @@ typedef struct s_philo
 
 struct s_table
 {
-	int				philo_nbr;
+	long			philo_nbr;
 	long			time_to_die;
 	long			time_to_eat;
 	long			time_to_sleep;
-	int				number_of_times_each_philosopher_must_eat;
+	long			number_of_times_each_philosopher_must_eat;
 	pthread_t		monitor;
 	t_philo			*philo;
 	t_fork			*fork;
