@@ -12,91 +12,78 @@
 
 #include "../inc/philo.h"
 
-void	input_parse(t_table *table, char **av)
+void	input_parse(t_monitor *monitor, char **av)
 {
-	table->philo_nbr = ft_atol(av[1]);
-	table->fork_nbr = table->philo_nbr;
-	table->time_to_die = ft_atol(av[2]);
-	table->time_to_eat = ft_atol(av[3]);
-	table->time_to_sleep = ft_atol(av[4]);
+	monitor->philo_nbr = ft_atol(av[1]);
+	monitor->time_to_die = ft_atol(av[2]);
+	monitor->time_to_eat = ft_atol(av[3]);
+	monitor->time_to_sleep = ft_atol(av[4]);
 	if (av[5])
-		table->number_of_times_each_philosopher_must_eat = ft_atol(av[5]);
+		monitor->eat_times = ft_atol(av[5]);
 }
 
-void	philo_init(t_table *table)
+void	monitor_init(t_monitor *monitor)
 {
-	t_philo	philo;
-	int		i;
+	t_philo			*philo;
+	struct timeval	time;
 
-	table->philo = safe_malloc(sizeof(t_philo) * table->philo_nbr);
-	i = 0;
-	while (i < table->philo_nbr)
-	{
-		philo.table = table;
-		philo.id = i;
-		//philo.dead = 0;
-		table->philo[i] = philo;
-		i++;
-	}
+	monitor->philo = safe_malloc(sizeof(t_philo) * monitor->philo_nbr);
+	philo = safe_malloc(sizeof(t_philo));
+	philo->monitor = monitor;
+	monitor->philo = philo;
+	philo->id = 0;
+	philo->dead = 0;
+	pthread_mutex_init(&(philo->fork_l), NULL);
+	pthread_mutex_init(&(philo->fork_r), NULL);
+	gettimeofday(&time, NULL);
+	philo->last_meal_time = time.tv_usec;
 }
 
 void	*action(void *data)
 {
-	struct timeval	time;
-	t_philo			*philo;
+	t_philo	*philo;
 
 	philo = (t_philo *)data;
-	pthread_mutex_init(&(philo->fork_l), NULL);
-	pthread_mutex_init(&(philo->fork_r), NULL);
-	gettimeofday(&time, NULL);
-	printf("Philosopher%d is thinking\n", philo->id);
-	if (philo->table->fork_nbr)
-	{
-		pthread_mutex_lock(&(philo->fork_l));
-		philo->table->fork_nbr -= 1;
-	}
-	else
-		printf("Philosopher%d is sleeping\n", philo->id);
-	if (philo->table->fork_nbr)
-	{
-		pthread_mutex_lock(&(philo->fork_r));
-		philo->table->fork_nbr -= 1;
-	}
-	else
-		printf("Philosopher%d is sleeping\n", philo->id);
-	usleep(philo->table->time_to_eat);
-	printf("Philosopher%d is eating\n", philo->id);
-	pthread_mutex_unlock(&(philo->fork_l));
-	philo->table->fork_nbr += 1;
-	pthread_mutex_unlock(&(philo->fork_r));
-	philo->table->fork_nbr += 1;
+	printf("error:%ld\n", philo->monitor->time_to_eat);
+	printf("Philosopher%d eats\n", philo->id);
+	//usleep(philo->monitor->time_to_eat);
+	printf("Philosopher%d finishs\n", philo->id);
+	return (NULL);
 }
 
-void	simulation(t_table *table)
+void	simulation(t_monitor *monitor)
 {
-	int	i;
+	int			i;
 
 	i = 0;
-	while (i < table->philo_nbr)
+	//pass two structures to each other possible?
+	while (i < monitor->philo_nbr)
 	{
-		if (pthread_create(&(table->philo->ph_id), NULL, action, &(table->philo[i])))
+		monitor->philo[i].id = i;
+		if (pthread_create(&(monitor->philo[i].ph), NULL, action, &(monitor->philo[i])))
 			return ;
 		i++;
 	}
-	if (pthread_join(table->philo->ph_id, NULL))
-		return ;
+	i = 0;
+	while (i < monitor->philo_nbr)
+	{
+		if (pthread_join((monitor->philo[i].ph), NULL))
+			return ;
+		i++;
+	}
 }
 
 int	main(int ac, char **av)
 {
-	t_table			*table;
+	t_monitor	*monitor;
 
 	if (ac == 5 || ac == 6)
 	{
-		table = safe_malloc(sizeof(t_table));
-		input_parse(table, av);
-		philo_init(table);
-		simulation(table);
+		monitor = safe_malloc(sizeof(t_monitor));
+		input_parse(monitor, av);
+		monitor_init(monitor);
+		simulation(monitor);
+		free(monitor);
 	}
 	else
 		printf("Wrong Arguments!\n");

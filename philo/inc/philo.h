@@ -19,31 +19,29 @@
 # include <pthread.h>
 # include <sys/time.h>
 
-typedef struct s_table	t_table;
+typedef struct s_monitor t_monitor;
 
 typedef struct s_philo
 {
-	int				id;
-	long			last_meal_time;
-	int				dead;
-	pthread_t		ph_id;
-	pthread_mutex_t	fork_l;
-	pthread_mutex_t	fork_r;
-	t_table			*table;
+	int					id;
+	int					dead;
+	pthread_t			ph;
+	pthread_mutex_t		fork_l;
+	pthread_mutex_t		fork_r;
+	long				last_meal_time;
+	struct s_monitor	*monitor;
 }	t_philo;
 
-struct s_table
+struct s_monitor
 {
-	long			philo_nbr;
-	long			fork_nbr;
-	long			time_to_die;
-	long			time_to_eat;
-	long			time_to_sleep;
-	long			number_of_times_each_philosopher_must_eat;
-	pthread_t		monitor;
-	t_philo			*philo;
-	pthread_mutex_t	t_mutex;
+	long	philo_nbr;
+	long	time_to_die;
+	long	time_to_eat;
+	long	time_to_sleep;
+	long	eat_times;
+	t_philo	*philo;
 };
+
 
 void	*safe_malloc(size_t byte);
 long	ft_atol(const char *nptr);
