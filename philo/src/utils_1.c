@@ -6,7 +6,7 @@
 /*   By: kaan <kaan@student.42.de>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 11:27:58 by kaan              #+#    #+#             */
-/*   Updated: 2024/02/15 15:09:16 by kaan             ###   ########.fr       */
+/*   Updated: 2024/02/18 15:41:24 by kaan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,4 +49,16 @@ void	*safe_malloc(size_t byte)
 		exit(0);
 	}
 	return (ptr);
+}
+
+long	current_time(void)
+{
+	struct timeval	time;
+
+	if (gettimeofday(&time, NULL) == -1)
+	{
+		printf("Time error!\n");
+		exit(0);
+	}
+	return (time.tv_usec);
 }
