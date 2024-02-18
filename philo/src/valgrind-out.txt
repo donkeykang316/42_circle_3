@@ -1,29 +1,53 @@
-==149837== Memcheck, a memory error detector
-==149837== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
-==149837== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
-==149837== Command: ./a.out
-==149837== Parent PID: 149833
-==149837== 
-==149837== 
-==149837== HEAP SUMMARY:
-==149837==     in use at exit: 2,448 bytes in 9 blocks
-==149837==   total heap usage: 29 allocs, 20 frees, 7,966 bytes allocated
-==149837== 
-==149837== 2,448 bytes in 9 blocks are possibly lost in loss record 1 of 1
-==149837==    at 0x484DA83: calloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==149837==    by 0x40147D9: calloc (rtld-malloc.h:44)
-==149837==    by 0x40147D9: allocate_dtv (dl-tls.c:375)
-==149837==    by 0x40147D9: _dl_allocate_tls (dl-tls.c:634)
-==149837==    by 0x49057B4: allocate_stack (allocatestack.c:430)
-==149837==    by 0x49057B4: pthread_create@@GLIBC_2.34 (pthread_create.c:647)
-==149837==    by 0x40126D: main (in /home/kaan/Documents/42_circle_3/philo/src/a.out)
-==149837== 
-==149837== LEAK SUMMARY:
-==149837==    definitely lost: 0 bytes in 0 blocks
-==149837==    indirectly lost: 0 bytes in 0 blocks
-==149837==      possibly lost: 2,448 bytes in 9 blocks
-==149837==    still reachable: 0 bytes in 0 blocks
-==149837==         suppressed: 0 bytes in 0 blocks
-==149837== 
-==149837== For lists of detected and suppressed errors, rerun with: -s
-==149837== ERROR SUMMARY: 1 errors from 1 contexts (suppressed: 0 from 0)
+==12789== Memcheck, a memory error detector
+==12789== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==12789== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
+==12789== Command: ./a.out 6 100 50 50 10
+==12789== Parent PID: 12781
+==12789== 
+==12789== Invalid write of size 4
+==12789==    at 0x109466: simulation (in /home/someng/42_circle_3/philo/src/a.out)
+==12789==    by 0x109573: main (in /home/someng/42_circle_3/philo/src/a.out)
+==12789==  Address 0x4a900f8 is 24 bytes before an unallocated block of size 4,194,000 in arena "client"
+==12789== 
+--12789-- VALGRIND INTERNAL ERROR: Valgrind received a signal 11 (SIGSEGV) - exiting
+--12789-- si_code=1;  Faulting address: 0x1;  sp: 0x1002da9de0
+
+valgrind: the 'impossible' happened:
+   Killed by fatal signal
+
+host stacktrace:
+==12789==    at 0x5804AB86: ??? (in /usr/libexec/valgrind/memcheck-amd64-linux)
+==12789==    by 0x5804CF0A: ??? (in /usr/libexec/valgrind/memcheck-amd64-linux)
+==12789==    by 0x5800500C: ??? (in /usr/libexec/valgrind/memcheck-amd64-linux)
+==12789==    by 0x58005453: ??? (in /usr/libexec/valgrind/memcheck-amd64-linux)
+==12789==    by 0x5809B03A: ??? (in /usr/libexec/valgrind/memcheck-amd64-linux)
+==12789==    by 0x580E3F40: ??? (in /usr/libexec/valgrind/memcheck-amd64-linux)
+
+sched status:
+  running_tid=1
+
+Thread 1: status = VgTs_Runnable (lwpid 12789)
+==12789==    at 0x484DA83: calloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==12789==    by 0x40147D9: calloc (rtld-malloc.h:44)
+==12789==    by 0x40147D9: allocate_dtv (dl-tls.c:375)
+==12789==    by 0x40147D9: _dl_allocate_tls (dl-tls.c:634)
+==12789==    by 0x48F97B4: allocate_stack (allocatestack.c:430)
+==12789==    by 0x48F97B4: pthread_create@@GLIBC_2.34 (pthread_create.c:647)
+==12789==    by 0x1094BF: simulation (in /home/someng/42_circle_3/philo/src/a.out)
+==12789==    by 0x109573: main (in /home/someng/42_circle_3/philo/src/a.out)
+client stack range: [0x1FFEFFD000 0x1FFF000FFF] client SP: 0x1FFEFFF8A0
+valgrind stack range: [0x1002CAA000 0x1002DA9FFF] top usage: 18744 of 1048576
+
+
+Note: see also the FAQ in the source distribution.
+It contains workarounds to several common problems.
+In particular, if Valgrind aborted or crashed after
+identifying problems in your program, there's a good chance
+that fixing those problems will prevent Valgrind aborting or
+crashing, especially if it happened in m_mallocfree.c.
+
+If that doesn't help, please report this bug to: www.valgrind.org
+
+In the bug report, send all the above text, the valgrind
+version, and what OS and version you are using.  Thanks.
+
