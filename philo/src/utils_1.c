@@ -6,7 +6,7 @@
 /*   By: kaan <kaan@student.42.de>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 11:27:58 by kaan              #+#    #+#             */
-/*   Updated: 2024/02/18 15:41:24 by kaan             ###   ########.fr       */
+/*   Updated: 2024/02/19 14:08:14 by kaan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,4 +61,9 @@ long	current_time(void)
 		exit(0);
 	}
 	return (time.tv_usec);
+}
+
+long	time_stamp(long start)
+{
+	return(current_time() - start);
 }

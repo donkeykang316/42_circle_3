@@ -6,7 +6,7 @@
 /*   By: kaan <kaan@student.42.de>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/08 17:48:32 by kaan              #+#    #+#             */
-/*   Updated: 2024/02/18 16:13:56 by kaan             ###   ########.fr       */
+/*   Updated: 2024/02/19 14:25:37 by kaan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ typedef struct s_philo
 	long				time_to_die;
 	long				time_to_eat;
 	long				time_to_sleep;
-	long				eat_times;
+	long				food_quantity;
 	int					id;
 	int					dead;
 	int					feed;
@@ -44,5 +44,6 @@ typedef struct s_monitor
 void	*safe_malloc(size_t byte);
 long	ft_atol(const char *nptr);
 long	current_time(void);
+long	time_stamp(long start);
 
 #endif

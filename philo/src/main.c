@@ -6,7 +6,7 @@
 /*   By: kaan <kaan@student.42.de>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/08 17:42:02 by kaan              #+#    #+#             */
-/*   Updated: 2024/02/18 17:26:06 by kaan             ###   ########.fr       */
+/*   Updated: 2024/02/19 14:29:51 by kaan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	input_parse(t_philo *philo, char **av)
 	philo->time_to_eat = ft_atol(av[3]);
 	philo->time_to_sleep = ft_atol(av[4]);
 	if (av[5])
-		philo->eat_times = ft_atol(av[5]);
+		philo->food_quantity = ft_atol(av[5]);
 }
 
 void	fork_init(pthread_mutex_t *fork, char **av)
@@ -62,29 +62,57 @@ void	philo_init(t_philo *philo, t_monitor *monitor, pthread_mutex_t *fork, char 
 	}
 }
 
-void	*action(void *data)
+void	p_eat(t_philo *philo, long start)
 {
-	t_philo			*philo;
-
-	philo = (t_philo *)data;
-	philo->last_meal_time = current_time();
 	pthread_mutex_lock(philo->fork_r);
-	//printf("time_rmain_before:%ld\n", current_time() - philo->last_meal_time);
+	printf("%ld Philosopher%d has taken a fork\n", time_stamp(start), philo->id);
 	pthread_mutex_lock(philo->fork_l);
 	if (current_time() - philo->last_meal_time >= philo->time_to_die && philo->feed == 0)
 	{
 		philo->dead = 1;
-		//printf("time_rmain:%ld\n", current_time() - philo->last_meal_time);
-		printf("Philosopher%d died\n", philo->id);
-		pthread_mutex_unlock(philo->fork_l);
-		pthread_mutex_unlock(philo->fork_r);
-		return (NULL);
+		printf("%ld Philosopher%d died\n", time_stamp(start), philo->id);
+		exit(0) ;
 	}
+	printf("%ld Philosopher%d has taken a fork\n", time_stamp(start), philo->id);
+	printf("%ld Philosopher%d  is eating\n", time_stamp(start), philo->id);
 	philo->feed = 1;
 	usleep(philo->time_to_eat);
 	pthread_mutex_unlock(philo->fork_r);
 	pthread_mutex_unlock(philo->fork_l);
-	printf("Philosopher%d survived\n", philo->id);
+	philo->last_meal_time = current_time();
+}
+
+void	p_think(t_philo *philo, long start)
+{
+	if (philo->id % 2 == 0 && philo->last_meal_time - current_time() < 1)
+	{
+		printf("%ld Philosopher%d is thinking\n", time_stamp(start), philo->id);
+		usleep(5);
+		philo->last_meal_time = current_time();
+	}
+}
+
+void	p_sleep(t_philo *philo, long start)
+{
+	printf("%ld Philosopher%d is sleeping\n", time_stamp(start), philo->id);
+	usleep(philo->time_to_sleep);
+	philo->last_meal_time = current_time();
+}
+
+void	*action(void *data)
+{
+	t_philo	*philo;
+	long	start;
+
+	philo = (t_philo *)data;
+	start = current_time();
+	philo->last_meal_time = current_time();
+	while (1)
+	{
+		p_think(philo, start);
+		p_eat(philo, start);
+		p_sleep(philo, start);
+	}
 	return (NULL);
 }
 
