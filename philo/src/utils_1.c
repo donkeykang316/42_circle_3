@@ -6,7 +6,7 @@
 /*   By: kaan <kaan@student.42.de>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 11:27:58 by kaan              #+#    #+#             */
-/*   Updated: 2024/02/19 14:08:14 by kaan             ###   ########.fr       */
+/*   Updated: 2024/02/20 20:52:09 by kaan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ long	current_time(void)
 		printf("Time error!\n");
 		exit(0);
 	}
-	return (time.tv_usec);
+	return (time.tv_sec * 1000 + time.tv_usec / 1000);
 }
 
 long	time_stamp(long start)
