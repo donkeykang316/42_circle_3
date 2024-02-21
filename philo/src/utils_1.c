@@ -65,5 +65,10 @@ long	current_time(void)
 
 long	time_stamp(long start)
 {
-	return(current_time() - start);
+	return (current_time() - start);
+}
+
+void	ft_sleep(long milsec)
+{
+	usleep(milsec * 1000);
 }

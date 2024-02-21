@@ -34,12 +34,15 @@ void	fork_init(pthread_mutex_t *fork, char **av)
 	}
 }
 
-void	monitor_init(t_monitor *monitor, t_philo philo, char **av)
+void	monitor_init(t_monitor *monitor, t_philo *philo, char **av)
 {
-	monitor->philo = &philo;
+	monitor->philo = philo;
 }
 
-void	philo_init(t_philo *philo, t_monitor *monitor, pthread_mutex_t *fork, char **av)
+void	philo_init(t_philo *philo, 
+		t_monitor *monitor,
+		pthread_mutex_t *fork,
+		char **av)
 {
 	int				i;
 
@@ -65,25 +68,28 @@ void	philo_init(t_philo *philo, t_monitor *monitor, pthread_mutex_t *fork, char 
 
 void	p_eat(t_philo *philo, long start)
 {
-	if (!philo->id % 2)
-		pthread_mutex_lock(philo->fork_r);
+	pthread_mutex_lock(philo->fork_r);
 	printf("%ld %d has taken a fork\n", time_stamp(start), philo->id);
 	pthread_mutex_lock(philo->fork_l);
-	if (current_time() - philo->last_meal_time >= philo->time_to_die && !philo->feed)
-	{
-		philo->dead = 1;
-		printf("%ld %d died\n", time_stamp(start), philo->id);
-		exit(0) ;
-	}
 	printf("%ld %d has taken a fork\n", time_stamp(start), philo->id);
 	printf("%ld %d  is eating\n", time_stamp(start), philo->id);
 	philo->feed = 1;
 	philo->feed_time += 1;
-	usleep(philo->time_to_eat);
+	ft_sleep(philo->time_to_eat);
 	pthread_mutex_unlock(philo->fork_l);
 	pthread_mutex_unlock(philo->fork_r);
 	philo->last_meal_time = current_time();
 }
+
+/*void	dead(t_philo *philo)
+{
+	if (current_time() - philo->last_meal_time >= philo->time_to_die && !philo->feed)
+	{
+		philo->dead = 1;
+		printf("%ld %d died\n", time_stamp(start), philo->id);
+		exit (0);
+	}
+}*/
 
 void	p_think(t_philo *philo, long start)
 {
@@ -94,7 +100,7 @@ void	p_sleep(t_philo *philo, long start)
 {
 	philo->feed = 0;
 	printf("%ld %d is sleeping\n", time_stamp(start), philo->id);
-	usleep(philo->time_to_sleep);
+	ft_sleep(philo->time_to_sleep);
 }
 
 void	*monitoring(void *data)
@@ -115,7 +121,7 @@ void	*action(void *data)
 	philo = (t_philo *)data;
 	start = current_time();
 	philo->last_meal_time = current_time();
-	//while (1)
+	while (1)
 	{
 		p_think(philo, start);
 		p_eat(philo, start);
@@ -124,28 +130,28 @@ void	*action(void *data)
 	return (NULL);
 }
 
-void	simulation(t_philo philo, t_monitor *monitor)
+void	simulation(t_philo philo, t_monitor monitor)
 {
 	int			i;
 
 	i = 0;
-	if (pthread_create(&(monitor->mon), NULL, &monitoring, &monitor))
-			return ;
+	if (pthread_create(&(monitor.mon), NULL, monitoring, &monitor))
+		return ;
 	while (i < philo.philo_nbr)
 	{
-		if (pthread_create(&(monitor->philo[i].ph), NULL, &action, &(monitor->philo[i])))
+		if (pthread_create(&(monitor.philo->ph), NULL, &action, &(monitor.philo[i])))
 			return ;
 		i++;
 	}
 	i = 0;
 	while (i < philo.philo_nbr)
 	{
-		if (pthread_join((monitor->philo[i].ph), NULL))
+		if (pthread_join((monitor.philo[i].ph), NULL))
 			return ;
 		i++;
 	}
-	if (pthread_join(monitor->mon, NULL))
-			return ;
+	if (pthread_join(monitor.mon, NULL))
+		return ;
 }
 
 int	main(int ac, char **av)
@@ -159,9 +165,9 @@ int	main(int ac, char **av)
 		philo = safe_malloc(sizeof(t_philo));
 		fork = safe_malloc(sizeof(pthread_mutex_t) * ft_atol(av[1]));
 		fork_init(fork, av);
-		monitor_init(&monitor, *philo, av);
+		monitor_init(&monitor, philo, av);
 		philo_init(philo, &monitor, fork, av);
-		simulation(*philo, &monitor);
+		simulation(*philo, monitor);
 		free(monitor.philo);
 		free(philo);
 	}

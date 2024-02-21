@@ -1,45 +1,51 @@
-#include "../inc/philo.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <pthread.h>
 
-void	*eat_food(void *id)
-{
-	//t_fork	fork;
-	int		i;	
+typedef struct s_philo {
+    long time_to_die;
+} t_philo;
 
-	i = *(int *)id;
-	printf("Philosopher%d takes the fork\n", i);
-	//pthread_mutex_lock(&fork.fork);
-	sleep(1);
-	printf("Philosopher%d finishs the food\n", i);
-	//pthread_mutex_unlock(&fork.fork);
-	free(id);
-	return (NULL);
+typedef struct s_monitor {
+    t_philo *philo;
+    pthread_t mon;
+} t_monitor;
+
+void *monitoring(void *data);
+
+int main() {
+    t_philo philo_data;
+    t_monitor monitor;
+
+    // Allocate memory for philo
+    monitor.philo = (t_philo *)malloc(sizeof(t_philo));
+    if (monitor.philo == NULL) {
+        printf("Memory allocation failed\n");
+        return 1;
+    }
+
+    // Set time_to_die
+    monitor.philo->time_to_die = 500;
+
+    // Create thread
+    if (pthread_create(&(monitor.mon), NULL, monitoring, (void *)&monitor)) {
+        printf("Error creating thread\n");
+        free(monitor.philo); // Free previously allocated memory
+        return 1;
+    }
+
+    // Join thread
+    pthread_join(monitor.mon, NULL);
+
+    // Free allocated memory
+    free(monitor.philo);
+
+    return 0;
 }
 
-int	main(int ac, char **av)
-{
-	pthread_t	*philo;
-	t_fork		fork;
-	int			*id;
-	int			i;
-
-	//pthread_mutex_init(&fork.fork, NULL);
-	i = 1;
-	philo = malloc(10 * sizeof(pthread_t));
-	while (i != 11)
-	{
-		id = malloc(sizeof(int));
-		if (!id)
-			return (0);
-		*id = i;
-		if (pthread_create(philo, NULL, eat_food, id))
-			return (0);
-		/*pthread_detach(philo[3]);
-		pthread_detach(philo[4]);*/
-		i++;
-	}
-	if (pthread_join(*philo, NULL))
-		return (0);
-	//pthread_mutex_destroy(&fork.fork);
-	free(philo);
-	pthread_exit(0);
+void *monitoring(void *data) {
+    t_monitor *monitor;
+    monitor = (t_monitor *)data;
+    printf("Time to die: %ld\n", monitor->philo->time_to_die);
+    return NULL;
 }

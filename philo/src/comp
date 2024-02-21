@@ -1,1 +1,1 @@
-cc main.c utils_1.c -pthread && ./a.out 6 50 200 150 10
+cc main.c utils_1.c -pthread && ./a.out 4 310 200 100
