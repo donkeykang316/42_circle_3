@@ -18,25 +18,28 @@ void	p_eat(t_philo *philo, long start)
 	printf("%ld %d has taken a fork\n", time_stamp(start), philo->id);
 	pthread_mutex_lock(philo->fork_l);
 	printf("%ld %d has taken a fork\n", time_stamp(start), philo->id);
-    philo->feed = 1;
+	philo->last_meal_time = current_time();
 	printf("%ld %d  is eating\n", time_stamp(start), philo->id);
-    pthread_mutex_lock(&(philo->eat_mod));
 	philo->feed_time += 1;
-    philo->last_meal_time = current_time();
-     pthread_mutex_unlock(&(philo->eat_mod));
 	ft_sleep(philo->time_to_eat);
-	philo->feed = 0;
 	pthread_mutex_unlock(philo->fork_l);
 	pthread_mutex_unlock(philo->fork_r);
 }
 
-int	dead(t_philo *philo)
+int	dead(t_monitor *monitor)
 {
-	if (current_time() - philo->last_meal_time >= philo->time_to_die && !philo->feed)
+	int	i;
+
+	i = 0;
+	while (i < monitor->philo->philo_nbr)
 	{
-		philo->dead = 1;
-		printf("%d died\n", philo->id);
-		return (1);
+		if (current_time() - monitor->philo->last_meal_time >= monitor->philo->time_to_die)
+		{
+			monitor->philo->dead = 1;
+			printf("%d died\n", monitor->philo->id);
+			return (1);
+		}
+		i++;
 	}
 	return (0);
 }

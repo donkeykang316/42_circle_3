@@ -28,13 +28,11 @@ typedef struct s_philo
 	long				food_quantity;
 	int					id;
 	int					dead;
-	int					feed;
 	int					feed_time;
 	pthread_t			ph;
 	long				start;
 	pthread_mutex_t		*fork_l;
 	pthread_mutex_t		*fork_r;
-	pthread_mutex_t		eat_mod;
 	long				last_meal_time;
 }	t_philo;
 
@@ -63,6 +61,6 @@ void	p_sleep(t_philo *philo, long start);
 void	*monitoring(void *data);
 void	*action(void *data);
 void	simulation(t_philo philo, t_monitor monitor);
-int		dead(t_philo *philo);
+int		dead(t_monitor *monitor);
 
 #endif

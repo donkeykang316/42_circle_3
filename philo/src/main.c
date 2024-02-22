@@ -19,8 +19,8 @@ void	*monitoring(void *data)
 	monitor = (t_monitor *)data;
 	while (1)
 	{
-		if(monitor->philo->dead == 1);
-			break ;
+		if(dead(monitor) == 1)
+			exit(1);
 	}
 	return (NULL);
 }
@@ -30,9 +30,8 @@ void	*action(void *data)
 	t_philo	*philo;
 
 	philo = (t_philo *)data;
-	while (!dead(philo))
+	while (1)
 	{
-		//printf("philo:%d error_time:%ld error:%d\n\n", philo->id, current_time() - philo->last_meal_time, philo->feed);
 		p_think(philo, philo->start);
 		p_eat(philo, philo->start);
 		p_sleep(philo, philo->start);
