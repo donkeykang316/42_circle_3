@@ -6,7 +6,7 @@
 /*   By: kaan <kaan@student.42.de>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/08 17:48:32 by kaan              #+#    #+#             */
-/*   Updated: 2024/02/20 15:22:46 by kaan             ###   ########.fr       */
+/*   Updated: 2024/02/22 16:10:29 by kaan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,10 @@ typedef struct s_philo
 	int					feed;
 	int					feed_time;
 	pthread_t			ph;
+	long				start;
 	pthread_mutex_t		*fork_l;
 	pthread_mutex_t		*fork_r;
+	pthread_mutex_t		eat_mod;
 	long				last_meal_time;
 }	t_philo;
 
@@ -61,6 +63,6 @@ void	p_sleep(t_philo *philo, long start);
 void	*monitoring(void *data);
 void	*action(void *data);
 void	simulation(t_philo philo, t_monitor monitor);
-void	dead(t_philo *philo);
+int		dead(t_philo *philo);
 
 #endif
