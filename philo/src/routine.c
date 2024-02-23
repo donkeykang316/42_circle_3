@@ -14,8 +14,11 @@
 
 void	p_eat(t_philo *philo, long start)
 {
-	pthread_mutex_lock(philo->fork_r);
-	printf("%ld %d has taken a fork\n", time_stamp(start), philo->id);
+	if (philo->id % 2)
+	{
+		pthread_mutex_lock(philo->fork_r);
+		printf("%ld %d has taken a fork\n", time_stamp(start), philo->id);
+	}
 	pthread_mutex_lock(philo->fork_l);
 	printf("%ld %d has taken a fork\n", time_stamp(start), philo->id);
 	philo->last_meal_time = current_time();

@@ -19,7 +19,7 @@ void	*monitoring(void *data)
 	monitor = (t_monitor *)data;
 	while (1)
 	{
-		if(dead(monitor) == 1)
+		if (dead(monitor) == 1)
 			exit(1);
 	}
 	return (NULL);
