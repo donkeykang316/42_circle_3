@@ -6,7 +6,7 @@
 /*   By: kaan <kaan@student.42.de>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/08 17:42:02 by kaan              #+#    #+#             */
-/*   Updated: 2024/02/22 16:05:28 by kaan             ###   ########.fr       */
+/*   Updated: 2024/02/24 14:17:38 by kaan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	*monitoring(void *data)
 	monitor = (t_monitor *)data;
 	while (1)
 	{
-		if (dead(monitor) == 1)
+		if (dead(monitor) == 1 || food_check(monitor) == 1)
 			exit(1);
 	}
 	return (NULL);

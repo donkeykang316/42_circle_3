@@ -6,7 +6,7 @@
 /*   By: kaan <kaan@student.42.de>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/08 17:48:32 by kaan              #+#    #+#             */
-/*   Updated: 2024/02/22 16:10:29 by kaan             ###   ########.fr       */
+/*   Updated: 2024/02/24 14:56:15 by kaan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@
 # include <pthread.h>
 # include <sys/time.h>
 
+typedef struct s_monitor t_monitor;
+
 typedef struct s_philo
 {
 	long				philo_nbr;
@@ -28,19 +30,21 @@ typedef struct s_philo
 	long				food_quantity;
 	int					id;
 	int					dead;
-	int					feed_time;
 	pthread_t			ph;
 	long				start;
 	pthread_mutex_t		*fork_l;
 	pthread_mutex_t		*fork_r;
 	long				last_meal_time;
+	pthread_mutex_t		eat_mod;
+	t_monitor			*monitor;
 }	t_philo;
 
-typedef struct s_monitor 
+struct s_monitor 
 {
 	t_philo		*philo;
 	pthread_t	mon;
-}	t_monitor;
+	int			*feed_time;
+};
 
 
 void	*safe_malloc(size_t byte);
@@ -62,5 +66,6 @@ void	*monitoring(void *data);
 void	*action(void *data);
 void	simulation(t_philo philo, t_monitor monitor);
 int		dead(t_monitor *monitor);
+int		food_check(t_monitor *monitor);
 
 #endif

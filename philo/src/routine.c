@@ -6,7 +6,7 @@
 /*   By: kaan <kaan@student.42.de>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 15:50:19 by kaan              #+#    #+#             */
-/*   Updated: 2024/02/22 16:17:25 by kaan             ###   ########.fr       */
+/*   Updated: 2024/02/24 15:18:11 by kaan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,10 @@ void	p_eat(t_philo *philo, long start)
 	pthread_mutex_lock(philo->fork_l);
 	printf("%ld %d has taken a fork\n", time_stamp(start), philo->id);
 	philo->last_meal_time = current_time();
+	pthread_mutex_lock(&(philo->eat_mod));
 	printf("%ld %d  is eating\n", time_stamp(start), philo->id);
-	philo->feed_time += 1;
+	*(philo->monitor->feed_time) += 1;
+	pthread_mutex_unlock(&(philo->eat_mod));
 	ft_sleep(philo->time_to_eat);
 	pthread_mutex_unlock(philo->fork_l);
 	pthread_mutex_unlock(philo->fork_r);
@@ -43,6 +45,18 @@ int	dead(t_monitor *monitor)
 			return (1);
 		}
 		i++;
+	}
+	return (0);
+}
+
+int	food_check(t_monitor *monitor)
+{
+	if (monitor->philo->food_quantity)
+	{
+		pthread_mutex_lock(&(monitor->philo->eat_mod));
+		if (*(monitor->feed_time) - 1 >= monitor->philo->food_quantity + 1)
+			return (1);
+		pthread_mutex_unlock(&(monitor->philo->eat_mod));
 	}
 	return (0);
 }
