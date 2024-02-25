@@ -6,7 +6,7 @@
 /*   By: kaan <kaan@student.42.de>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 15:52:01 by kaan              #+#    #+#             */
-/*   Updated: 2024/02/25 16:29:41 by kaan             ###   ########.fr       */
+/*   Updated: 2024/02/26 00:06:20 by kaan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,14 +24,7 @@ void	input_parse(t_philo *philo, char **av)
 
 void	fork_init(pthread_mutex_t *fork, char **av)
 {
-	int	i;
-
-	i = 0;
-	while (i < ft_atol(av[1]))
-	{
-		safe_mutex_init(&fork[i]);
-		i++;
-	}
+	safe_mutex_init(fork);
 }
 
 void	monitor_init(t_monitor *monitor, t_philo *philo, char **av)
@@ -41,7 +34,7 @@ void	monitor_init(t_monitor *monitor, t_philo *philo, char **av)
 	*(monitor->feed_time) = 0;
 }
 
-void	philo_init(t_philo *philo, 
+void	philo_init(t_philo *philo,
 		t_monitor *monitor,
 		pthread_mutex_t *fork,
 		char **av)
@@ -54,6 +47,7 @@ void	philo_init(t_philo *philo,
 	{
 		input_parse(philo, av);
 		philo->id = i + 1;
+		philo->dead = 0;
 		philo->fork_l = &fork[i];
 		if (!i)
 			philo->fork_r = &fork[philo->philo_nbr - 1];
@@ -62,6 +56,7 @@ void	philo_init(t_philo *philo,
 		philo->last_meal_time = current_time();
 		philo->start = current_time();
 		safe_mutex_init(&(philo->eat_mod));
+		safe_mutex_init(&(philo->dead_mod));
 		philo->monitor = monitor;
 		monitor->philo[i] = *philo;
 		i++;

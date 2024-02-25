@@ -6,7 +6,7 @@
 /*   By: kaan <kaan@student.42.de>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/08 17:42:02 by kaan              #+#    #+#             */
-/*   Updated: 2024/02/25 16:44:21 by kaan             ###   ########.fr       */
+/*   Updated: 2024/02/26 00:02:09 by kaan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	*monitoring(void *data)
 	while (1)
 	{
 		if (dead(monitor) == 1 || food_check(monitor) == 1)
-			exit(1);
+			exit(0);
 	}
 	return (NULL);
 }
@@ -30,6 +30,8 @@ void	*action(void *data)
 	t_philo	*philo;
 
 	philo = (t_philo *)data;
+	if (philo->id % 2)
+		ft_sleep(1);
 	while (1)
 	{
 		p_think(philo, philo->start);
@@ -73,6 +75,7 @@ int	main(int ac, char **av)
 		monitor_init(&monitor, philo, av);
 		philo_init(philo, &monitor, fork, av);
 		simulation(*philo, monitor);
+		mutex_destry_all(&monitor);
 		free(monitor.philo);
 		free(philo);
 	}

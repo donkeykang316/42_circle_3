@@ -1,1 +1,1 @@
-cc main.c utils_1.c -pthread && valgrind --log-file=valgrind-out.txt ./a.out 6 100 50 50 10
+cc *.c -pthread && valgrind --tool=helgrind ./a.out 2 800 100 100

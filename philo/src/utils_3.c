@@ -6,7 +6,7 @@
 /*   By: kaan <kaan@student.42.de>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/25 16:23:37 by kaan              #+#    #+#             */
-/*   Updated: 2024/02/25 17:15:09 by kaan             ###   ########.fr       */
+/*   Updated: 2024/02/26 00:08:23 by kaan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,17 @@ void	safe_mutex_destroy(pthread_mutex_t *mutex)
 		printf("Mutex destroy fail!\n");
 		exit(0);
 	}
+}
+
+int	dead_loop(t_philo *philo)
+{
+	safe_mutex_lock(&(philo->dead_mod));
+	if (philo->dead)
+	{
+		return (safe_mutex_unlock(&(philo->dead_mod)), 1);
+	}
+	safe_mutex_unlock(&(philo->dead_mod));
+	return (0);
 }
 
 void	mutex_destry_all(t_monitor *monitor)
