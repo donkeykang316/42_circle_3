@@ -6,7 +6,7 @@
 /*   By: kaan <kaan@student.42.de>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/08 17:42:02 by kaan              #+#    #+#             */
-/*   Updated: 2024/02/24 14:17:38 by kaan             ###   ########.fr       */
+/*   Updated: 2024/02/25 16:44:21 by kaan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,23 +44,19 @@ void	simulation(t_philo philo, t_monitor monitor)
 	int			i;
 
 	i = 0;
-	if (pthread_create(&(monitor.mon), NULL, monitoring, &monitor))
-		return ;
+	safe_pthread_create(&(monitor.mon), monitoring, &monitor);
 	while (i < philo.philo_nbr)
 	{
-		if (pthread_create(&(monitor.philo->ph), NULL, &action, &(monitor.philo[i])))
-			return ;
+		safe_pthread_create(&(monitor.philo->ph), &action, &(monitor.philo[i]));
 		i++;
 	}
 	i = 0;
 	while (i < philo.philo_nbr)
 	{
-		if (pthread_join((monitor.philo[i].ph), NULL))
-			return ;
+		safe_pthread_join((monitor.philo[i].ph));
 		i++;
 	}
-	if (pthread_join(monitor.mon, NULL))
-		return ;
+	safe_pthread_join(monitor.mon);
 }
 
 int	main(int ac, char **av)

@@ -6,7 +6,7 @@
 /*   By: kaan <kaan@student.42.de>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/08 17:48:32 by kaan              #+#    #+#             */
-/*   Updated: 2024/02/24 14:56:15 by kaan             ###   ########.fr       */
+/*   Updated: 2024/02/25 17:15:25 by kaan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 # include <pthread.h>
 # include <sys/time.h>
 
-typedef struct s_monitor t_monitor;
+typedef struct s_monitor	t_monitor;
 
 typedef struct s_philo
 {
@@ -29,7 +29,6 @@ typedef struct s_philo
 	long				time_to_sleep;
 	long				food_quantity;
 	int					id;
-	int					dead;
 	pthread_t			ph;
 	long				start;
 	pthread_mutex_t		*fork_l;
@@ -39,13 +38,12 @@ typedef struct s_philo
 	t_monitor			*monitor;
 }	t_philo;
 
-struct s_monitor 
+struct	s_monitor
 {
 	t_philo		*philo;
 	pthread_t	mon;
 	int			*feed_time;
 };
-
 
 void	*safe_malloc(size_t byte);
 long	ft_atol(const char *nptr);
@@ -67,5 +65,13 @@ void	*action(void *data);
 void	simulation(t_philo philo, t_monitor monitor);
 int		dead(t_monitor *monitor);
 int		food_check(t_monitor *monitor);
+void	safe_pthread_create(pthread_t *thread,
+			void*(*routine)(void*), void *arg);
+void	safe_pthread_join(pthread_t thread);
+void	safe_mutex_init(pthread_mutex_t *mutex);
+void	safe_mutex_lock(pthread_mutex_t *mutex);
+void	safe_mutex_unlock(pthread_mutex_t *mutex);
+void	safe_mutex_destroy(pthread_mutex_t *mutex);
+void	mutex_destry_all(t_monitor *monitor);
 
 #endif

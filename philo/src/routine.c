@@ -6,7 +6,7 @@
 /*   By: kaan <kaan@student.42.de>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 15:50:19 by kaan              #+#    #+#             */
-/*   Updated: 2024/02/24 15:18:11 by kaan             ###   ########.fr       */
+/*   Updated: 2024/02/25 17:04:35 by kaan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,19 +16,19 @@ void	p_eat(t_philo *philo, long start)
 {
 	if (philo->id % 2)
 	{
-		pthread_mutex_lock(philo->fork_r);
+		safe_mutex_lock(philo->fork_r);
 		printf("%ld %d has taken a fork\n", time_stamp(start), philo->id);
 	}
-	pthread_mutex_lock(philo->fork_l);
+	safe_mutex_lock(philo->fork_l);
 	printf("%ld %d has taken a fork\n", time_stamp(start), philo->id);
 	philo->last_meal_time = current_time();
-	pthread_mutex_lock(&(philo->eat_mod));
+	safe_mutex_lock(&(philo->eat_mod));
 	printf("%ld %d  is eating\n", time_stamp(start), philo->id);
 	*(philo->monitor->feed_time) += 1;
-	pthread_mutex_unlock(&(philo->eat_mod));
+	safe_mutex_unlock(&(philo->eat_mod));
 	ft_sleep(philo->time_to_eat);
-	pthread_mutex_unlock(philo->fork_l);
-	pthread_mutex_unlock(philo->fork_r);
+	safe_mutex_unlock(philo->fork_l);
+	safe_mutex_unlock(philo->fork_r);
 }
 
 int	dead(t_monitor *monitor)
@@ -38,9 +38,9 @@ int	dead(t_monitor *monitor)
 	i = 0;
 	while (i < monitor->philo->philo_nbr)
 	{
-		if (current_time() - monitor->philo->last_meal_time >= monitor->philo->time_to_die)
+		if (current_time() - monitor->philo->last_meal_time
+			>= monitor->philo->time_to_die)
 		{
-			monitor->philo->dead = 1;
 			printf("%d died\n", monitor->philo->id);
 			return (1);
 		}
@@ -53,10 +53,10 @@ int	food_check(t_monitor *monitor)
 {
 	if (monitor->philo->food_quantity)
 	{
-		pthread_mutex_lock(&(monitor->philo->eat_mod));
+		safe_mutex_lock(&(monitor->philo->eat_mod));
 		if (*(monitor->feed_time) - 1 >= monitor->philo->food_quantity + 1)
 			return (1);
-		pthread_mutex_unlock(&(monitor->philo->eat_mod));
+		safe_mutex_unlock(&(monitor->philo->eat_mod));
 	}
 	return (0);
 }
