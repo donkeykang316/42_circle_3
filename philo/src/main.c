@@ -20,7 +20,9 @@ void	*monitoring(void *data)
 	while (1)
 	{
 		if (dead(monitor) == 1 || food_check(monitor) == 1)
-			exit(0);
+		{
+			return (NULL);
+		}
 	}
 	return (NULL);
 }
@@ -32,7 +34,7 @@ void	*action(void *data)
 	philo = (t_philo *)data;
 	if (philo->id % 2)
 		ft_sleep(1);
-	while (1)
+	while (!dead_loop(philo))
 	{
 		p_think(philo, philo->start);
 		p_eat(philo, philo->start);

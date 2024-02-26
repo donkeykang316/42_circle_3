@@ -23,12 +23,12 @@ void	safe_mutex_destroy(pthread_mutex_t *mutex)
 
 int	dead_loop(t_philo *philo)
 {
-	safe_mutex_lock(&(philo->dead_mod));
 	if (philo->dead)
 	{
-		return (safe_mutex_unlock(&(philo->dead_mod)), 1);
+		safe_mutex_lock(philo->dead_mod);
+		printf("DEAD DEAD:%d\n", philo->id);
+		return (safe_mutex_unlock(philo->dead_mod), 1);
 	}
-	safe_mutex_unlock(&(philo->dead_mod));
 	return (0);
 }
 
@@ -40,7 +40,7 @@ void	mutex_destry_all(t_monitor *monitor)
 	while (i)
 	{
 		pthread_mutex_destroy(monitor->philo[i].fork_l);
-		pthread_mutex_destroy(&(monitor->philo[i].eat_mod));
+		pthread_mutex_destroy(monitor->philo[i].eat_mod);
 		i--;
 	}
 }

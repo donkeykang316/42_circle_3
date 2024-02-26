@@ -32,6 +32,8 @@ void	monitor_init(t_monitor *monitor, t_philo *philo, char **av)
 	monitor->philo = philo;
 	monitor->feed_time = safe_malloc(sizeof(int));
 	*(monitor->feed_time) = 0;
+	safe_mutex_init(&(monitor->eat_mod));
+	safe_mutex_init(&(monitor->dead_mod));
 }
 
 void	philo_init(t_philo *philo,
@@ -55,8 +57,8 @@ void	philo_init(t_philo *philo,
 			philo->fork_r = &fork[i - 1];
 		philo->last_meal_time = current_time();
 		philo->start = current_time();
-		safe_mutex_init(&(philo->eat_mod));
-		safe_mutex_init(&(philo->dead_mod));
+		philo->eat_mod = &(monitor->eat_mod);
+		philo->dead_mod = &(monitor->dead_mod);
 		philo->monitor = monitor;
 		monitor->philo[i] = *philo;
 		i++;

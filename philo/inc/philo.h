@@ -35,16 +35,18 @@ typedef struct s_philo
 	pthread_mutex_t		*fork_l;
 	pthread_mutex_t		*fork_r;
 	long				last_meal_time;
-	pthread_mutex_t		eat_mod;
-	pthread_mutex_t		dead_mod;
+	pthread_mutex_t		*eat_mod;
+	pthread_mutex_t		*dead_mod;
 	t_monitor			*monitor;
 }	t_philo;
 
 struct	s_monitor
 {
-	t_philo		*philo;
-	pthread_t	mon;
-	int			*feed_time;
+	t_philo				*philo;
+	pthread_t			mon;
+	pthread_mutex_t		eat_mod;
+	pthread_mutex_t		dead_mod;
+	int					*feed_time;
 };
 
 void	*safe_malloc(size_t byte);
