@@ -6,7 +6,7 @@
 /*   By: kaan <kaan@student.42.de>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 15:52:01 by kaan              #+#    #+#             */
-/*   Updated: 2024/02/26 00:06:20 by kaan             ###   ########.fr       */
+/*   Updated: 2024/02/26 18:53:45 by kaan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,8 @@ void	fork_init(pthread_mutex_t *fork, char **av)
 void	monitor_init(t_monitor *monitor, t_philo *philo, char **av)
 {
 	monitor->philo = philo;
+	monitor->dead = safe_malloc(sizeof(int));
+	*(monitor->dead) = 0;
 	monitor->feed_time = safe_malloc(sizeof(int));
 	*(monitor->feed_time) = 0;
 	safe_mutex_init(&(monitor->eat_mod));
@@ -49,7 +51,6 @@ void	philo_init(t_philo *philo,
 	{
 		input_parse(philo, av);
 		philo->id = i + 1;
-		philo->dead = 0;
 		philo->fork_l = &fork[i];
 		if (!i)
 			philo->fork_r = &fork[philo->philo_nbr - 1];

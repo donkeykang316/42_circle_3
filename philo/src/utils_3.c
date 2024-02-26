@@ -6,7 +6,7 @@
 /*   By: kaan <kaan@student.42.de>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/25 16:23:37 by kaan              #+#    #+#             */
-/*   Updated: 2024/02/26 00:08:23 by kaan             ###   ########.fr       */
+/*   Updated: 2024/02/26 19:10:29 by kaan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,10 +23,10 @@ void	safe_mutex_destroy(pthread_mutex_t *mutex)
 
 int	dead_loop(t_philo *philo)
 {
-	if (philo->dead)
+	if (*(philo->monitor->dead))
 	{
 		safe_mutex_lock(philo->dead_mod);
-		printf("DEAD DEAD:%d\n", philo->id);
+		printf("%ld %d died\n", time_stamp(philo->start), philo->id);
 		return (safe_mutex_unlock(philo->dead_mod), 1);
 	}
 	return (0);

@@ -6,7 +6,7 @@
 /*   By: kaan <kaan@student.42.de>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 15:50:19 by kaan              #+#    #+#             */
-/*   Updated: 2024/02/25 23:53:55 by kaan             ###   ########.fr       */
+/*   Updated: 2024/02/26 19:07:04 by kaan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +39,7 @@ int	dead(t_monitor *monitor)
 			>= monitor->philo[i].time_to_die)
 		{
 			safe_mutex_lock(&(monitor->dead_mod));
-			monitor->philo[i].dead = 1;
-			printf("%d died\n", monitor->philo[i].id);
+			*(monitor->dead) = 1;
 			return (1);
 			safe_mutex_unlock(&(monitor->dead_mod));
 		}
@@ -54,9 +53,9 @@ int	food_check(t_monitor *monitor)
 	if (monitor->philo->food_quantity)
 	{
 		safe_mutex_lock(&(monitor->eat_mod));
-		if (*(monitor->feed_time) - 1 >= monitor->philo->food_quantity + 1)
-			return (1);
-		safe_mutex_unlock(&(monitor->eat_mod));
+		if (*(monitor->feed_time) >= monitor->philo->food_quantity)
+			printf("Fee_time:%d\n", *(monitor->feed_time));
+			return (safe_mutex_unlock(&(monitor->eat_mod)), 1);
 	}
 	return (0);
 }
