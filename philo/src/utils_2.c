@@ -6,7 +6,7 @@
 /*   By: kaan <kaan@student.42.de>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/25 16:04:56 by kaan              #+#    #+#             */
-/*   Updated: 2024/02/25 17:05:59 by kaan             ###   ########.fr       */
+/*   Updated: 2024/02/26 22:08:05 by kaan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +25,7 @@ void	safe_pthread_create(pthread_t *thread,
 void	safe_pthread_join(pthread_t thread)
 {
 	if (pthread_join(thread, NULL))
-	{
-		printf("Thread join fail!\n");
-		exit(0);
-	}
+		return ;
 }
 
 void	safe_mutex_init(pthread_mutex_t *mutex)

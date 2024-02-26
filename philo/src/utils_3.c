@@ -6,7 +6,7 @@
 /*   By: kaan <kaan@student.42.de>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/25 16:23:37 by kaan              #+#    #+#             */
-/*   Updated: 2024/02/26 19:35:07 by kaan             ###   ########.fr       */
+/*   Updated: 2024/02/26 22:04:52 by kaan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,15 +37,21 @@ int	dead_loop(t_philo *philo)
 	return (0);
 }
 
-void	mutex_destry_all(t_monitor *monitor)
+void	destroy_all(t_monitor *monitor,
+			t_philo *philo, pthread_mutex_t *fork)
 {
 	long	i;
 
-	i = monitor->philo->philo_nbr;
-	while (i)
+	i = 0;
+	while (i < monitor->philo->philo_nbr)
 	{
-		pthread_mutex_destroy(monitor->philo[i].fork_l);
-		pthread_mutex_destroy(monitor->philo[i].eat_mod);
-		i--;
+		safe_mutex_destroy(monitor->philo[i].eat_mod);
+		i++;
 	}
+	free(monitor->dead);
+	free(monitor->full);
+	free(monitor->feed_time);
+	free(fork);
+	free(philo);
+	free(monitor->philo);
 }

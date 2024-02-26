@@ -6,7 +6,7 @@
 /*   By: kaan <kaan@student.42.de>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/08 17:42:02 by kaan              #+#    #+#             */
-/*   Updated: 2024/02/26 19:34:31 by kaan             ###   ########.fr       */
+/*   Updated: 2024/02/26 21:58:21 by kaan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,12 @@ void	*monitoring(void *data)
 	t_monitor	*monitor;
 
 	monitor = (t_monitor *)data;
+	if (monitor->philo->philo_nbr == 1)
+		return (NULL);
 	while (1)
 	{
 		if (dead(monitor) == 1 || food_check(monitor) == 1)
-		{
 			return (NULL);
-		}
 	}
 	return (NULL);
 }
@@ -82,9 +82,7 @@ int	main(int ac, char **av)
 		monitor_init(&monitor, philo, av);
 		philo_init(philo, &monitor, fork, av);
 		simulation(*philo, monitor);
-		mutex_destry_all(&monitor);
-		free(monitor.philo);
-		free(philo);
+		destroy_all(&monitor, philo, fork);
 	}
 	else
 		printf("Wrong Arguments!\n");

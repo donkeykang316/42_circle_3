@@ -6,7 +6,7 @@
 /*   By: kaan <kaan@student.42.de>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/08 17:48:32 by kaan              #+#    #+#             */
-/*   Updated: 2024/02/26 19:27:55 by kaan             ###   ########.fr       */
+/*   Updated: 2024/02/26 21:48:53 by kaan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,8 @@ void	safe_mutex_init(pthread_mutex_t *mutex);
 void	safe_mutex_lock(pthread_mutex_t *mutex);
 void	safe_mutex_unlock(pthread_mutex_t *mutex);
 void	safe_mutex_destroy(pthread_mutex_t *mutex);
-void	mutex_destry_all(t_monitor *monitor);
+void	destroy_all(t_monitor *monitor,
+			t_philo *philo, pthread_mutex_t *fork);
 int		dead_loop(t_philo *philo);
 
 #endif

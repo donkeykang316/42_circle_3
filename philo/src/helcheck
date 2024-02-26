@@ -1,0 +1,1 @@
+cc *.c -pthread && valgrind --tool=helgrind ./a.out 3 510 200 100
