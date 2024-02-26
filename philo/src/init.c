@@ -6,7 +6,7 @@
 /*   By: kaan <kaan@student.42.de>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 15:52:01 by kaan              #+#    #+#             */
-/*   Updated: 2024/02/26 18:53:45 by kaan             ###   ########.fr       */
+/*   Updated: 2024/02/26 19:28:08 by kaan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,8 @@ void	monitor_init(t_monitor *monitor, t_philo *philo, char **av)
 	*(monitor->dead) = 0;
 	monitor->feed_time = safe_malloc(sizeof(int));
 	*(monitor->feed_time) = 0;
+	monitor->full = safe_malloc(sizeof(int));
+	*(monitor->full) = 0;
 	safe_mutex_init(&(monitor->eat_mod));
 	safe_mutex_init(&(monitor->dead_mod));
 }

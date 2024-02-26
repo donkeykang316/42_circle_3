@@ -6,7 +6,7 @@
 /*   By: kaan <kaan@student.42.de>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 15:50:19 by kaan              #+#    #+#             */
-/*   Updated: 2024/02/26 19:07:04 by kaan             ###   ########.fr       */
+/*   Updated: 2024/02/26 19:28:20 by kaan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,10 +52,14 @@ int	food_check(t_monitor *monitor)
 {
 	if (monitor->philo->food_quantity)
 	{
-		safe_mutex_lock(&(monitor->eat_mod));
-		if (*(monitor->feed_time) >= monitor->philo->food_quantity)
-			printf("Fee_time:%d\n", *(monitor->feed_time));
+		if (*(monitor->feed_time)
+			>= (monitor->philo->food_quantity + 1) * monitor->philo->philo_nbr)
+		{
+			safe_mutex_lock(&(monitor->eat_mod));
+			*(monitor->full) = 1;
+			printf("Eating time:%d\n", *(monitor->feed_time));
 			return (safe_mutex_unlock(&(monitor->eat_mod)), 1);
+		}
 	}
 	return (0);
 }

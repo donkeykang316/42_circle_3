@@ -6,7 +6,7 @@
 /*   By: kaan <kaan@student.42.de>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/08 17:48:32 by kaan              #+#    #+#             */
-/*   Updated: 2024/02/26 18:53:06 by kaan             ###   ########.fr       */
+/*   Updated: 2024/02/26 19:27:55 by kaan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ struct	s_monitor
 {
 	t_philo				*philo;
 	int					*dead;
+	int					*full;
 	pthread_t			mon;
 	pthread_mutex_t		eat_mod;
 	pthread_mutex_t		dead_mod;

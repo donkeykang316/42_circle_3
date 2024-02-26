@@ -6,7 +6,7 @@
 /*   By: kaan <kaan@student.42.de>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/08 17:42:02 by kaan              #+#    #+#             */
-/*   Updated: 2024/02/26 18:59:30 by kaan             ###   ########.fr       */
+/*   Updated: 2024/02/26 19:34:31 by kaan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,11 @@ void	*action(void *data)
 	t_philo	*philo;
 
 	philo = (t_philo *)data;
+	if (philo->philo_nbr == 1)
+	{
+		printf("%ld %d died\n", time_stamp(philo->start), philo->id);
+		return (NULL);
+	}
 	if (philo->id % 2)
 		ft_sleep(1);
 	while (!dead_loop(philo))
