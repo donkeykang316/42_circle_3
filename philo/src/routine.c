@@ -33,16 +33,16 @@ int	dead(t_monitor *monitor)
 	int	i;
 
 	i = 0;
-	while (i < monitor->philo->philo_nbr)
+	while (i < monitor->philo[i].philo_nbr)
 	{
-		if (current_time() - monitor->philo->last_meal_time
-			>= monitor->philo->time_to_die)
+		if (current_time() - monitor->philo[i].last_meal_time
+			>= monitor->philo[i].time_to_die)
 		{
-			safe_mutex_lock(&(monitor->philo->dead_mod));
-			monitor->philo->dead = 1;
-			printf("%d died\n", monitor->philo->id);
+			safe_mutex_lock(&(monitor->philo[i].dead_mod));
+			monitor->philo[i].dead = 1;
+			printf("%d died\n", monitor->philo[i].id);
 			return (1);
-			safe_mutex_unlock(&(monitor->philo->dead_mod));
+			safe_mutex_unlock(&(monitor->philo[i].dead_mod));
 		}
 		i++;
 	}
