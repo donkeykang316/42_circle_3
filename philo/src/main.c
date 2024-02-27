@@ -53,10 +53,11 @@ void	simulation(t_philo philo, t_monitor monitor)
 	int			i;
 
 	i = 0;
-	safe_pthread_create(&(monitor.mon), monitoring, &monitor);
+	safe_pthread_create(&(monitor.mon), &monitoring, &monitor);
 	while (i < philo.philo_nbr)
 	{
-		safe_pthread_create(&(monitor.philo->ph), &action, &(monitor.philo[i]));
+		safe_pthread_create(&(monitor.philo[i].ph),
+			&action, &(monitor.philo[i]));
 		i++;
 	}
 	i = 0;

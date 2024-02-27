@@ -20,6 +20,8 @@ void	input_parse(t_philo *philo, char **av)
 	philo->time_to_sleep = ft_atol(av[4]);
 	if (av[5])
 		philo->food_quantity = ft_atol(av[5]);
+	else
+		philo->food_quantity = -1;
 }
 
 void	fork_init(t_monitor *monitor, char **av)

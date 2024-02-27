@@ -33,7 +33,7 @@ int	dead(t_monitor *monitor)
 	int	i;
 
 	i = 0;
-	while (i < monitor->philo[i].philo_nbr)
+	while (i < monitor->philo[0].philo_nbr)
 	{
 		if (current_time() - monitor->philo[i].last_meal_time
 			>= monitor->philo[i].time_to_die)
@@ -50,10 +50,13 @@ int	dead(t_monitor *monitor)
 
 int	food_check(t_monitor *monitor)
 {
-	if (monitor->philo->food_quantity)
+	if (monitor->philo[0].food_quantity == -1)
+		return (0);
+	else
 	{
 		if (*(monitor->feed_time)
-			>= (monitor->philo->food_quantity + 1) * monitor->philo->philo_nbr)
+			>= (monitor->philo[0].food_quantity + 1)
+			* monitor->philo[0].philo_nbr)
 		{
 			safe_mutex_lock(&(monitor->eat_mod));
 			*(monitor->full) = 1;
