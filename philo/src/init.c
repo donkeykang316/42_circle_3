@@ -22,9 +22,16 @@ void	input_parse(t_philo *philo, char **av)
 		philo->food_quantity = ft_atol(av[5]);
 }
 
-void	fork_init(pthread_mutex_t *fork, char **av)
+void	fork_init(t_monitor *monitor, char **av)
 {
-	safe_mutex_init(fork);
+	long	i;
+
+	i = 0;
+	while (i < ft_atol(av[1]))
+	{
+		safe_mutex_init(&(monitor->fork[i].fork));
+		i++;
+	}
 }
 
 void	monitor_init(t_monitor *monitor, t_philo *philo, char **av)
@@ -42,7 +49,6 @@ void	monitor_init(t_monitor *monitor, t_philo *philo, char **av)
 
 void	philo_init(t_philo *philo,
 		t_monitor *monitor,
-		pthread_mutex_t *fork,
 		char **av)
 {
 	int				i;
@@ -53,11 +59,11 @@ void	philo_init(t_philo *philo,
 	{
 		input_parse(philo, av);
 		philo->id = i + 1;
-		philo->fork_l = &fork[i];
+		philo->fork_l = &(monitor->fork[i].fork);
 		if (!i)
-			philo->fork_r = &fork[philo->philo_nbr - 1];
+			philo->fork_r = &(monitor->fork[philo->philo_nbr - 1].fork);
 		else
-			philo->fork_r = &fork[i - 1];
+			philo->fork_r = &(monitor->fork[i - 1].fork);
 		philo->last_meal_time = current_time();
 		philo->start = current_time();
 		philo->eat_mod = &(monitor->eat_mod);

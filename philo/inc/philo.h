@@ -39,11 +39,18 @@ typedef struct s_philo
 	t_monitor			*monitor;
 }	t_philo;
 
+typedef struct s_fork
+{
+	pthread_mutex_t		fork;
+}	t_fork;
+
+
 struct	s_monitor
 {
 	t_philo				*philo;
 	int					*dead;
 	int					*full;
+	t_fork				*fork;
 	pthread_t			mon;
 	pthread_mutex_t		eat_mod;
 	pthread_mutex_t		dead_mod;
@@ -56,11 +63,10 @@ long	current_time(void);
 long	time_stamp(long start);
 void	ft_sleep(long milsec);
 void	input_parse(t_philo *philo, char **av);
-void	fork_init(pthread_mutex_t *fork, char **av);
+void	fork_init(t_monitor *monitor, char **av);
 void	monitor_init(t_monitor *monitor, t_philo *philo, char **av);
 void	philo_init(t_philo *philo,
 			t_monitor *monitor,
-			pthread_mutex_t *fork,
 			char **av);
 void	p_eat(t_philo *philo, long start);
 void	p_think(t_philo *philo, long start);
@@ -78,7 +84,7 @@ void	safe_mutex_lock(pthread_mutex_t *mutex);
 void	safe_mutex_unlock(pthread_mutex_t *mutex);
 void	safe_mutex_destroy(pthread_mutex_t *mutex);
 void	destroy_all(t_monitor *monitor,
-			t_philo *philo, pthread_mutex_t *fork);
+			t_philo *philo);
 int		dead_loop(t_philo *philo);
 
 #endif

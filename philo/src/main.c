@@ -72,17 +72,16 @@ int	main(int ac, char **av)
 {
 	t_philo			*philo;
 	t_monitor		monitor;
-	pthread_mutex_t	*fork;
 
 	if (ac == 5 || ac == 6)
 	{
 		philo = safe_malloc(sizeof(t_philo));
-		fork = safe_malloc(sizeof(pthread_mutex_t) * ft_atol(av[1]));
-		fork_init(fork, av);
+		monitor.fork = safe_malloc(sizeof(t_fork) * ft_atol(av[1]));
+		fork_init(&monitor, av);
 		monitor_init(&monitor, philo, av);
-		philo_init(philo, &monitor, fork, av);
+		philo_init(philo, &monitor, av);
 		simulation(*philo, monitor);
-		destroy_all(&monitor, philo, fork);
+		destroy_all(&monitor, philo);
 	}
 	else
 		printf("Wrong Arguments!\n");

@@ -38,20 +38,21 @@ int	dead_loop(t_philo *philo)
 }
 
 void	destroy_all(t_monitor *monitor,
-			t_philo *philo, pthread_mutex_t *fork)
+			t_philo *philo)
 {
 	long	i;
 
 	i = 0;
 	while (i < monitor->philo->philo_nbr)
 	{
+		safe_mutex_destroy(&(monitor->fork[i].fork));
 		safe_mutex_destroy(monitor->philo[i].eat_mod);
 		i++;
 	}
 	free(monitor->dead);
 	free(monitor->full);
 	free(monitor->feed_time);
-	free(fork);
+	free(monitor->fork);
 	free(philo);
 	free(monitor->philo);
 }
