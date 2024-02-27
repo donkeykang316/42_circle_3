@@ -49,6 +49,7 @@ void	destroy_all(t_monitor *monitor,
 	{
 		safe_mutex_destroy(&(monitor->fork[i].fork));
 		safe_mutex_destroy(monitor->philo[i].eat_mod);
+		safe_mutex_destroy(&(monitor->philo[i].print));
 		i++;
 	}
 	free(monitor->dead);

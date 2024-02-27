@@ -18,7 +18,7 @@ void	safe_pthread_create(pthread_t *thread,
 	if (pthread_create(thread, NULL, routine, arg))
 	{
 		printf("Thread init fail!\n");
-		exit(0);
+		return ;
 	}
 }
 
@@ -33,7 +33,7 @@ void	safe_mutex_init(pthread_mutex_t *mutex)
 	if (pthread_mutex_init(mutex, NULL))
 	{
 		printf("Mutex init fail!\n");
-		exit(0);
+		return ;
 	}
 }
 
@@ -42,7 +42,7 @@ void	safe_mutex_lock(pthread_mutex_t *mutex)
 	if (pthread_mutex_lock(mutex))
 	{
 		printf("Mutex lock fail!\n");
-		exit(0);
+		return ;
 	}
 }
 
@@ -51,6 +51,6 @@ void	safe_mutex_unlock(pthread_mutex_t *mutex)
 	if (pthread_mutex_unlock(mutex))
 	{
 		printf("Mutex unlock fail!\n");
-		exit(0);
+		return ;
 	}
 }

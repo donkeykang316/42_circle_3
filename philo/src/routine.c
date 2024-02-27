@@ -15,9 +15,13 @@
 void	p_eat(t_philo *philo, long start)
 {
 	safe_mutex_lock(philo->fork_r);
+	safe_mutex_lock(&(philo->print));
 	printf("%ld %d has taken a fork\n", time_stamp(start), philo->id);
+	safe_mutex_unlock(&(philo->print));
 	safe_mutex_lock(philo->fork_l);
+	safe_mutex_lock(&(philo->print));
 	printf("%ld %d has taken a fork\n", time_stamp(start), philo->id);
+	safe_mutex_unlock(&(philo->print));
 	philo->last_meal_time = current_time();
 	safe_mutex_lock(philo->eat_mod);
 	printf("%ld %d  is eating\n", time_stamp(start), philo->id);
@@ -67,11 +71,15 @@ int	food_check(t_monitor *monitor)
 
 void	p_think(t_philo *philo, long start)
 {
+	safe_mutex_lock(&(philo->print));
 	printf("%ld %d is thinking\n", time_stamp(start), philo->id);
+	safe_mutex_unlock(&(philo->print));
 }
 
 void	p_sleep(t_philo *philo, long start)
 {
+	safe_mutex_lock(&(philo->print));
 	printf("%ld %d is sleeping\n", time_stamp(start), philo->id);
+	safe_mutex_unlock(&(philo->print));
 	ft_sleep(philo->time_to_sleep);
 }

@@ -33,6 +33,7 @@ typedef struct s_philo
 	long				start;
 	pthread_mutex_t		*fork_l;
 	pthread_mutex_t		*fork_r;
+	pthread_mutex_t		print;
 	long				last_meal_time;
 	pthread_mutex_t		*eat_mod;
 	pthread_mutex_t		*dead_mod;

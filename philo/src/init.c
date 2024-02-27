@@ -68,6 +68,7 @@ void	philo_init(t_philo *philo,
 			philo->fork_r = &(monitor->fork[i - 1].fork);
 		philo->last_meal_time = current_time();
 		philo->start = current_time();
+		safe_mutex_init(&(philo->print));
 		philo->eat_mod = &(monitor->eat_mod);
 		philo->dead_mod = &(monitor->dead_mod);
 		philo->monitor = monitor;
