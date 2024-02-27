@@ -6,7 +6,7 @@
 /*   By: kaan <kaan@student.42.de>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 15:52:01 by kaan              #+#    #+#             */
-/*   Updated: 2024/02/26 22:04:12 by kaan             ###   ########.fr       */
+/*   Updated: 2024/02/27 20:00:32 by kaan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void	fork_init(t_monitor *monitor, char **av)
 	}
 }
 
-void	monitor_init(t_monitor *monitor, t_philo *philo, char **av)
+void	monitor_init(t_monitor *monitor, t_philo *philo)
 {
 	monitor->philo = philo;
 	monitor->dead = safe_malloc(sizeof(int));

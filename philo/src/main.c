@@ -6,7 +6,7 @@
 /*   By: kaan <kaan@student.42.de>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/08 17:42:02 by kaan              #+#    #+#             */
-/*   Updated: 2024/02/26 21:58:21 by kaan             ###   ########.fr       */
+/*   Updated: 2024/02/27 20:01:25 by kaan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ int	main(int ac, char **av)
 		philo = safe_malloc(sizeof(t_philo));
 		monitor.fork = safe_malloc(sizeof(t_fork) * ft_atol(av[1]));
 		fork_init(&monitor, av);
-		monitor_init(&monitor, philo, av);
+		monitor_init(&monitor, philo);
 		philo_init(philo, &monitor, av);
 		simulation(*philo, monitor);
 		destroy_all(&monitor, philo);

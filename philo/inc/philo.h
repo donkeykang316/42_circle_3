@@ -6,7 +6,7 @@
 /*   By: kaan <kaan@student.42.de>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/08 17:48:32 by kaan              #+#    #+#             */
-/*   Updated: 2024/02/26 21:48:53 by kaan             ###   ########.fr       */
+/*   Updated: 2024/02/27 20:00:50 by kaan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ long	time_stamp(long start);
 void	ft_sleep(long milsec);
 void	input_parse(t_philo *philo, char **av);
 void	fork_init(t_monitor *monitor, char **av);
-void	monitor_init(t_monitor *monitor, t_philo *philo, char **av);
+void	monitor_init(t_monitor *monitor, t_philo *philo);
 void	philo_init(t_philo *philo,
 			t_monitor *monitor,
 			char **av);
