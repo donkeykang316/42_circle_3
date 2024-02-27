@@ -40,8 +40,7 @@ int	dead(t_monitor *monitor)
 		{
 			safe_mutex_lock(&(monitor->dead_mod));
 			*(monitor->dead) = 1;
-			return (1);
-			safe_mutex_unlock(&(monitor->dead_mod));
+			return (safe_mutex_unlock(&(monitor->dead_mod)), 1);
 		}
 		i++;
 	}
@@ -60,7 +59,6 @@ int	food_check(t_monitor *monitor)
 		{
 			safe_mutex_lock(&(monitor->eat_mod));
 			*(monitor->full) = 1;
-			printf("Eating time:%d\n", *(monitor->feed_time));
 			return (safe_mutex_unlock(&(monitor->eat_mod)), 1);
 		}
 	}

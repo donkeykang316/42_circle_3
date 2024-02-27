@@ -86,5 +86,7 @@ void	safe_mutex_destroy(pthread_mutex_t *mutex);
 void	destroy_all(t_monitor *monitor,
 			t_philo *philo);
 int		dead_loop(t_philo *philo);
+int		check_arg_content(char *arg);
+int		check_valid_args(char **argv);
 
 #endif

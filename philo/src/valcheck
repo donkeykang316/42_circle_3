@@ -1,1 +1,1 @@
-cc *.c -pthread && valgrind ./a.out 4 510 200 100 2
+cc *.c -pthread && valgrind ./a.out 5 510 200 100 7

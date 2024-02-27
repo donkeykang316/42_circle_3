@@ -74,6 +74,8 @@ int	main(int ac, char **av)
 	t_philo			*philo;
 	t_monitor		monitor;
 
+	if (check_valid_args(av) == 1)
+		return (1);
 	if (ac == 5 || ac == 6)
 	{
 		philo = safe_malloc(sizeof(t_philo));
