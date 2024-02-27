@@ -1,1 +1,1 @@
-cc *.c -pthread && ./a.out 2 300 150 150
+cc *.c -pthread && ./a.out 200 410 200 200 10

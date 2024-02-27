@@ -6,7 +6,7 @@
 /*   By: kaan <kaan@student.42.de>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/25 16:23:37 by kaan              #+#    #+#             */
-/*   Updated: 2024/02/26 22:04:52 by kaan             ###   ########.fr       */
+/*   Updated: 2024/02/27 19:47:17 by kaan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	safe_mutex_destroy(pthread_mutex_t *mutex)
 	if (pthread_mutex_destroy(mutex))
 	{
 		printf("Mutex destroy fail!\n");
-		exit(0);
+		return ;
 	}
 }
 
