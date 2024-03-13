@@ -1,1 +1,1 @@
-make re && ./pipex ls -a
+make re && make clean && ./pipex ls -a
