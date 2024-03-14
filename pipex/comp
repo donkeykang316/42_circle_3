@@ -1,1 +1,1 @@
-make re && make clean && ./pipex ls -a
+make re && make clean && ./pipex infile "echo 1234" "echo 5678" outfile

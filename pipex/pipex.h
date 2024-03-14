@@ -4,12 +4,19 @@
 # include <stdio.h>
 # include <unistd.h>
 # include <stdlib.h>
+# include <fcntl.h>
 # include "libraries/libft/inc/libft.h"
 
 typedef struct	s_arg
 {
-	char    		*content;
-	struct s_arg	*next;
+	char	*filename1;
+	char	*path1;
+	char    *cmd1;
+	char	**agm1;
+	char	*path2;
+	char    *cmd2;
+	char	**agm2;
+	char	*filename2;
 }	t_arg;
 
 
