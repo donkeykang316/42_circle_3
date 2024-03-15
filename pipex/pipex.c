@@ -12,14 +12,12 @@ void	arg_init(t_arg *arg, char **av)
 	arg->filename2 = ft_strdup(av[4]);
 }
 
-void	file1_check(t_arg *argv)
+void	file1_check(t_arg *argv, int *fd)
 {
-	int	fd;
-
-	fd = open(argv->filename1, O_RDONLY);
-	if (fd == -1)
-		perror("file not valid\n");
-	close(fd);
+	if (access(argv->filename1, R_OK) != -1)
+		*fd = open(argv->filename1, O_RDONLY);
+	else
+		perror("");
 }
 
 void	cmd1_exp(t_arg *argv)
@@ -35,7 +33,7 @@ void	cmd1_exp(t_arg *argv)
 	argv->path1 = ft_strjoin(argv->path1, temp[0]);
 	while (temp[i])
 		i++;
-	argv->agm1 = malloc(sizeof(char **) * i);
+	argv->agm1 = malloc(sizeof(char **) * (i + 2));
 	i = 0;
 	while (temp[i])
 	{
@@ -44,6 +42,7 @@ void	cmd1_exp(t_arg *argv)
 		i++;
 		j++;
 	}
+	argv->agm1[j] = ft_strdup(argv->filename1);
 	free(temp);
 }
 
@@ -60,7 +59,7 @@ void	cmd2_exp(t_arg *argv)
 	argv->path2 = ft_strjoin(argv->path2, temp[0]);
 	while (temp[i])
 		i++;
-	argv->agm2 = malloc(sizeof(char **) * i);
+	argv->agm2 = malloc(sizeof(char **) * (i + 2));
 	i = 0;
 	while (temp[i])
 	{
@@ -76,29 +75,28 @@ int	main(int ac, char **av)
 {
 	t_arg	*argv;
 	int		pid;
-	int		i;
-	int		j;
+	int		fd;
 
 	if (ac == 5)
 	{
-		i = 0;
-		j = 1;
 		argv = malloc(sizeof(t_arg));
 		arg_init(argv, av);
-		file1_check(argv);
+		file1_check(argv, &fd);
 		cmd1_exp(argv);
 		cmd2_exp(argv);
 		pid = fork();
-		if (pid)
+		if (!pid)
 		{
-			if(execve(argv->path1, argv->agm1, NULL) == -1)
+			if (execve(argv->path1, argv->agm1, NULL) == -1)
 				perror("Could not execve\n");
 		}
 		else
 		{
-			if(execve(argv->path2, argv->agm2, NULL) == -1)
+		//	waitpid(pid);
+			if (execve(argv->path2, argv->agm2, NULL) == -1)
 				perror("Could not execve\n");
 		}
+		close(fd);
 	}
 	else
 		perror("Not valid argument\n");

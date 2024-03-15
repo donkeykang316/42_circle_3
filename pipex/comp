@@ -1,1 +1,1 @@
-make re && make clean && ./pipex infile "echo 1234" "echo 5678" outfile
+make re && make clean && ./pipex infile "grep 1" "echo 5678" outfile
