@@ -1,5 +1,17 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   pipex.h                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: kaan <kaan@student.42.de>                  +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/03/16 01:18:18 by kaan              #+#    #+#             */
+/*   Updated: 2024/03/16 01:21:53 by kaan             ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef PIPEX_H
-# define    PIPEX_H
+# define PIPEX_H
 
 # include <stdio.h>
 # include <unistd.h>
@@ -9,16 +21,7 @@
 # include <sys/wait.h>
 # include "libraries/libft/inc/libft.h"
 
-typedef struct s_arg
-{
-	char	*filename1;
-	char	*path1;
-	char	*cmd1;
-	char	**agm1;
-	char	*path2;
-	char	*cmd2;
-	char	**agm2;
-	char	*filename2;
-}	t_arg;
+char	*get_env(char **env, char *env_var);
+char	*get_path(char *cmd, char **env);
 
 #endif

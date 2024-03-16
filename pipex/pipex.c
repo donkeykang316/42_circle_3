@@ -1,102 +1,114 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   pipex.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: kaan <kaan@student.42.de>                  +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/03/16 01:18:05 by kaan              #+#    #+#             */
+/*   Updated: 2024/03/16 01:44:41 by kaan             ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "pipex.h"
 
-void	arg_init(t_arg *arg, char **av)
+void	ft_free(char **temp, char *path, char **exe)
 {
-	arg->filename1 = ft_strdup(av[1]);
-	arg->cmd1 = ft_strdup(av[2]);
-	arg->path1 = NULL;
-	arg->agm1 = NULL;
-	arg->cmd2 = ft_strdup(av[3]);
-	arg->path2 = NULL;
-	arg->agm2 = NULL;
-	arg->filename2 = ft_strdup(av[4]);
+	int	i;
+
+	i = 0;
+	if (temp)
+	{
+		while (temp[i])
+		{
+			free(temp[i]);
+			i++;
+		}
+	}
+	free(temp);
+	if (exe)
+	{
+		i = 0;
+		while (exe[i])
+		{
+			free(exe[i]);
+			i++;
+		}
+		free(exe);
+	}
+	if (path)
+		free(path);
 }
 
-void	file1_check(t_arg *argv, int *fd)
+void	cmd_execute(char *cmd, char **env)
 {
-	if (access(argv->filename1, R_OK) != -1)
-		*fd = open(argv->filename1, O_RDONLY);
-	else
+	char	**temp;
+	char	*path;
+	char	**exe;
+	int		i;
+	int		j;
+
+	i = 1;
+	j = 0;
+	temp = ft_split(cmd, 32);
+	path = get_path(cmd, env);
+	while (temp[i])
+		i++;
+	exe = malloc(sizeof(char *) * (i + 1));
+	i = 0;
+	while (temp[i])
+	{
+		exe[j] = ft_strdup(temp[i]);
+		i++;
+		j++;
+	}
+	if (execve(path, exe, env) == -1)
+		perror("Could not execve\n");
+	ft_free(temp, path, exe);
+}
+
+void	child_proc(char **av, int *pip_fd, char **env)
+{
+	int	fd;
+
+	fd = open(av[1], O_RDONLY | O_CREAT, 0777);
+	if (fd == -1)
 		perror("");
+	dup2(fd, STDIN_FILENO);
+	dup2(pip_fd[1], STDOUT_FILENO);
+	close(pip_fd[0]);
+	cmd_execute(av[2], env);
 }
 
-void	cmd1_exp(t_arg *argv)
+void	main_proc(char **av, int *pip_fd, char **env)
 {
-	char	**temp;
-	int		i;
-	int		j;
+	int	fd;
 
-	i = 1;
-	j = 0;
-	temp = ft_split(argv->cmd1, ' ');
-	argv->path1 = ft_strdup("/usr/bin/");
-	argv->path1 = ft_strjoin(argv->path1, temp[0]);
-	while (temp[i])
-		i++;
-	argv->agm1 = malloc(sizeof(char **) * (i + 2));
-	i = 0;
-	while (temp[i])
-	{
-		argv->agm1[j] = ft_strdup(temp[i]);
-		free(temp[i]);
-		i++;
-		j++;
-	}
-	argv->agm1[j] = ft_strdup(argv->filename1);
-	free(temp);
+	fd = open(av[4], O_WRONLY | O_CREAT | O_TRUNC, 0777);
+	if (fd == -1)
+		perror("");
+	dup2(fd, STDOUT_FILENO);
+	dup2(pip_fd[0], 0);
+	close(pip_fd[1]);
+	cmd_execute(av[3], env);
 }
 
-void	cmd2_exp(t_arg *argv)
+int	main(int ac, char **av, char **env)
 {
-	char	**temp;
-	int		i;
-	int		j;
-
-	i = 1;
-	j = 0;
-	temp = ft_split(argv->cmd2, ' ');
-	argv->path2 = ft_strdup("/usr/bin/");
-	argv->path2 = ft_strjoin(argv->path2, temp[0]);
-	while (temp[i])
-		i++;
-	argv->agm2 = malloc(sizeof(char **) * (i + 2));
-	i = 0;
-	while (temp[i])
-	{
-		argv->agm2[j] = ft_strdup(temp[i]);
-		free(temp[i]);
-		i++;
-		j++;
-	}
-	free(temp);
-}
-
-int	main(int ac, char **av)
-{
-	t_arg	*argv;
 	int		pid;
-	int		fd;
+	int		fd[2];
 
 	if (ac == 5)
 	{
-		argv = malloc(sizeof(t_arg));
-		arg_init(argv, av);
-		file1_check(argv, &fd);
-		cmd1_exp(argv);
-		cmd2_exp(argv);
+		if (pipe(fd) == -1)
+			perror("");
 		pid = fork();
 		if (!pid)
-		{
-			if (execve(argv->path1, argv->agm1, NULL) == -1)
-				perror("Could not execve\n");
-		}
+			child_proc(av, fd, env);
 		else
 		{
-		//	waitpid(pid);
-			if (execve(argv->path2, argv->agm2, NULL) == -1)
-				perror("Could not execve\n");
+			main_proc(av, fd, env);
 		}
-		close(fd);
 	}
 	else
 		perror("Not valid argument\n");

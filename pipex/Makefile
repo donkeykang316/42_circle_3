@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: kaan <kaan@student.42.fr>                  +#+  +:+       +#+         #
+#    By: kaan <kaan@student.42.de>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/21 14:44:47 by kaan              #+#    #+#              #
-#    Updated: 2024/02/06 16:48:20 by kaan             ###   ########.fr        #
+#    Updated: 2024/03/16 01:26:36 by kaan             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,10 @@ CFLAGS	=	-Wall -Werror -Wextra
 
 LIBS	=	./libraries/libft/libft.a
 
+PRINTF  =  ./libraries/printf/libftprintf.a
+
 SRCS	=	pipex.c\
+			utils.c\
 
 OBJS	=	$(SRCS:.c=.o)
 
@@ -26,10 +29,12 @@ all:		$(NAME)
 
 $(NAME): $(OBJS)
 			make -C ./libraries/libft
-			$(CC) $(CFLAGS) $(OBJS) $(LIBS) -o $(NAME)
+			make -C ./libraries/printf
+			$(CC) $(CFLAGS) $(OBJS) $(LIBS) $(PRINTF) -o $(NAME)
 
 clean:
 			make clean -C ./libraries/libft
+			make clean -C ./libraries/printf
 			rm -rf $(OBJS)
 			
 fclean:		clean
