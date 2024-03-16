@@ -6,11 +6,33 @@
 /*   By: kaan <kaan@student.42.de>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/16 01:20:20 by kaan              #+#    #+#             */
-/*   Updated: 2024/03/16 01:21:08 by kaan             ###   ########.fr       */
+/*   Updated: 2024/03/16 18:17:36 by kaan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
+
+void	ft_exit(char *error)
+{
+	perror(error);
+	exit(0);
+}
+
+void	ft_free(char **ptr)
+{
+	int	i;
+
+	i = 0;
+	if (ptr)
+	{
+		while (ptr[i])
+		{
+			free(ptr[i]);
+			i++;
+		}
+		free(ptr);
+	}
+}
 
 char	*get_env(char **env, char *env_var)
 {
@@ -28,28 +50,28 @@ char	*get_env(char **env, char *env_var)
 
 char	*get_path(char *cmd, char **env)
 {
-	char	*path;
-	char	**all_path;
-	char	**excu;
-	int		i;
+	t_tmp	tmp;
 
-	i = 0;
-	all_path = ft_split(get_env(env, "PATH"), 58);
-	excu = ft_split(cmd, 32);
-	while (all_path[i])
+	tmp.i = 0;
+	tmp.all_path = ft_split(get_env(env, "PATH"), 58);
+	tmp.excu = ft_split(cmd, 32);
+	while (tmp.all_path[tmp.i])
 	{
-		path = ft_strdup(all_path[i]);
-		path = ft_strjoin(path, "/");
-		path = ft_strjoin(path, excu[0]);
-		free(all_path[i]);
-		if (access(path, R_OK | X_OK) != -1)
+		tmp.temp = ft_strdup(tmp.all_path[tmp.i]);
+		tmp.temp1 = ft_strjoin(tmp.temp, "/");
+		free(tmp.temp);
+		tmp.path = ft_strjoin(tmp.temp1, tmp.excu[0]);
+		free(tmp.temp1);
+		if (access(tmp.path, R_OK | X_OK) != -1)
 		{
-			free(all_path);
-			free(excu);
-			return (path);
+			ft_free(tmp.all_path);
+			ft_free(tmp.excu);
+			return (tmp.path);
 		}
-		free(path);
-		i++;
+		free(tmp.path);
+		tmp.i++;
 	}
+	ft_free(tmp.all_path);
+	ft_free(tmp.excu);
 	return (NULL);
 }
