@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kaan <kaan@student.42.de>                  +#+  +:+       +#+        */
+/*   By: kaan <kaan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/16 01:20:20 by kaan              #+#    #+#             */
-/*   Updated: 2024/03/16 18:17:36 by kaan             ###   ########.fr       */
+/*   Updated: 2024/03/17 15:00:07 by kaan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,8 +41,8 @@ char	*get_env(char **env, char *env_var)
 	i = 0;
 	while (env[i])
 	{
-		if (ft_strnstr(env[i], env_var, ft_strlen(env[i])))
-			return (ft_strnstr(env[i], env_var, ft_strlen(env[i])));
+		if (!ft_strncmp(env_var, env[i], 4))
+			return (env[i]);
 		i++;
 	}
 	return (NULL);

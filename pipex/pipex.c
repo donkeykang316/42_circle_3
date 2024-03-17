@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kaan <kaan@student.42.de>                  +#+  +:+       +#+        */
+/*   By: kaan <kaan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/16 01:18:05 by kaan              #+#    #+#             */
-/*   Updated: 2024/03/16 18:27:44 by kaan             ###   ########.fr       */
+/*   Updated: 2024/03/17 15:00:48 by kaan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ void	cmd_execute(char *cmd, char **env)
 		i++;
 		j++;
 	}
+	exe[j] = NULL;
 	ft_free(temp);
 	if (execve(get_path(cmd, env), exe, env) == -1)
 	{
